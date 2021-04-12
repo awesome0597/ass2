@@ -25,8 +25,11 @@ public class MultipleBouncingBallsAnimation {
 
     static private Ball createNewBall(int r) {
         java.util.Random rand = new java.util.Random();
+        if (r * 2 >= 600) {
+            r = 600 / 2 - 1;
+        }
         //when defining point, x and y are bound to 139 and then have radius plus one added so to avoid (0,0)-(30,30)
-        return (new Ball(new Point(rand.nextInt(139) + r + 1, rand.nextInt(139) + r + 1), r, getRandomColor()));
+        return (new Ball(new Point(rand.nextInt(600 - 2 * r - 1) + r + 1, rand.nextInt(600 - 2 * r - 1) + r + 1), r, getRandomColor()));
     }
 
     static private void drawAnimation(int[] str) {
@@ -38,7 +41,7 @@ public class MultipleBouncingBallsAnimation {
         for (int i = 0; i < str.length; i++) {
             balls[i] = createNewBall(str[i]);
             // add plus 1 to speed so it is not 0
-            Velocity v = Velocity.fromAngleAndSpeed(rand.nextInt(360), rand.nextInt(10) + 1);
+            Velocity v = Velocity.fromAngleAndSpeed(rand.nextInt(360), rand.nextInt(20) + 1);
             balls[i].setVelocity(v);
         }
 
@@ -58,17 +61,17 @@ public class MultipleBouncingBallsAnimation {
         int[] str = null;
         int j = 0;
         for (int i = 0; i < args.length; i++) {
-           if (Integer.parseInt(args[i]) > 0){
-               str = new int[j + 1];
-               for (int k = 0; k < j; k++) {
-                   str[k] = Integer.parseInt(args[k]);
-               }
-               str[i] = Integer.parseInt(args[j]);
-               j++;
-           } else {
-               System.out.print("Invalid Radius");
-               return;
-           }
+            if (Integer.parseInt(args[i]) > 0) {
+                str = new int[j + 1];
+                for (int k = 0; k < j; k++) {
+                    str[k] = Integer.parseInt(args[k]);
+                }
+                str[i] = Integer.parseInt(args[j]);
+                j++;
+            } else {
+                System.out.print("Invalid Radius");
+                return;
+            }
         }
         if (str == null) {
             return;

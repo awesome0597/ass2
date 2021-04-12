@@ -64,11 +64,13 @@ public class Ball {
         if (this.center.distance(new Point(this.center.getX(), one.getBleft().getY())) <= this.r
                 || this.center.distance(new Point(this.center.getX(), one.getTleft().getY())) <= this.r) {
             setVelocity(this.v.getDx(), (-1) * this.v.getDy());
+            this.color = getRandomColor();
         }
         //if intersect with x border (width)
         if (this.center.distance(new Point(one.getTleft().getX(), this.center.getY())) <= this.r
                 || this.center.distance(new Point(one.getBright().getX(), this.center.getY())) <= this.r) {
             setVelocity((-1) * this.v.getDx(), this.v.getDy());
+            this.color = getRandomColor();
         }
 
     }
@@ -96,13 +98,22 @@ public class Ball {
         surface.fillCircle((int) this.center.getX(), (int) this.center.getY(), this.getSize());
     }
 
+    static private Color getRandomColor() {
+        Random rand = new Random();
+        float r = rand.nextFloat();
+        float g = rand.nextFloat();
+        float b = rand.nextFloat();
+        return (new Color(r, g, b));
+    }
+
     static private void drawAnimation(Point start, double dx, double dy) {
         GUI gui = new GUI("title", 200, 200);
         biuoop.Sleeper sleeper = new biuoop.Sleeper();
-        Ball ball = new Ball(new Point(start.getX(), start.getY()), 30, Color.MAGENTA);
+        java.util.Random rand = new java.util.Random();
+        Ball ball = new Ball(new Point(start.getX(), start.getY()), 30, getRandomColor());
         // ball.setVelocity(dx, dy);
         Frame one = new Frame(new Point(0, 200), new Point(0, 0), new Point(200, 0), new Point(200, 200), null);
-        Velocity v = Velocity.fromAngleAndSpeed(0, 2);
+        Velocity v = Velocity.fromAngleAndSpeed(dx, dy);
         ball.setVelocity(v);
         while (true) {
             ball.moveOneStep();
@@ -116,8 +127,8 @@ public class Ball {
 
     public static void main(String[] args) {
         java.util.Random rand = new java.util.Random();
-        double dx = rand.nextInt(5);
-        double dy = rand.nextInt(5);
-        drawAnimation(new Point(rand.nextInt(160), rand.nextInt(160)), dx, dy);
+        double dx = rand.nextInt(360);
+        double dy = rand.nextInt(10) + 1;
+        drawAnimation(new Point(rand.nextInt(160) + 30 + 1, rand.nextInt(160) + 30 + 1), dx, dy);
     }
 }

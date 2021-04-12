@@ -40,6 +40,13 @@ public class Frame {
         return tright;
     }
 
+    public double getWidth(){
+        return(this.bleft.distance(this.bright));
+    }
+    public double getHeight(){
+       return (this.bleft.distance(this.tleft));
+    }
+
     public void drawOn(DrawSurface surface) {
         double rib = this.tleft.distance(this.bleft);
         surface.setColor(this.getColor());

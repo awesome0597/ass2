@@ -25,7 +25,7 @@ public class MultipleFramesBouncingBallsAnimation {
     static private Ball createNewBall(int r, int min, int max) {
         java.util.Random rand = new java.util.Random();
         if (r * 2 >= max - min) {
-            r = (max - min)/2 - 1;
+            r = (max - min) / 2 - 1;
         }
         //when defining point, x and y are bound to 139 and then have radius plus one added so to avoid (0,0)-(30,30)
         return (new Ball(new Point(rand.nextInt((max - min) - 2 * r - 1) + r + min, rand.nextInt((max - min) - 2 * r - 1) + r + min), r, getRandomColor()));
@@ -44,18 +44,17 @@ public class MultipleFramesBouncingBallsAnimation {
         Frame one = createNewFrame(50, 500, Color.GRAY);
         Frame two = createNewFrame(450, 600, Color.YELLOW);
         Ball[] balls = new Ball[str.length];
-        for (int i = 0; i < str.length / 2; i++) {
-            balls[i] = createNewBall(str[i], 50, 500);
+        for (int i = 0; i < str.length; i++) {
+            if (i < str.length / 2) {
+                balls[i] = createNewBall(str[i], 50, 500);
+            } else {
+                balls[i] = createNewBall(str[i], 450, 600);
+            }
             // add plus 1 to speed so it is not 0
             Velocity v = Velocity.fromAngleAndSpeed(rand.nextInt(360), rand.nextInt(10) + 1);
             balls[i].setVelocity(v);
         }
-        for (int i = str.length / 2; i < str.length; i++) {
-            balls[i] = createNewBall(str[i], 450, 600);
-            // add plus 1 to speed so it is not 0
-            Velocity v = Velocity.fromAngleAndSpeed(rand.nextInt(360), rand.nextInt(10) + 1);
-            balls[i].setVelocity(v);
-        }
+
 
         while (true) {
             DrawSurface d = gui.getDrawSurface();
@@ -63,7 +62,7 @@ public class MultipleFramesBouncingBallsAnimation {
             two.drawOn(d);
             for (int i = 0; i < str.length; i++) {
                 balls[i].moveOneStep();
-                if (i < str.length / 2) {
+                if (i < (str.length / 2)) {
                     balls[i].changeVelocity(one);
                 } else {
                     balls[i].changeVelocity(two);
@@ -77,25 +76,25 @@ public class MultipleFramesBouncingBallsAnimation {
     }
 
     public static void main(String[] args) {
-        int[] str = null;
+        int[] rad = null;
         int j = 0;
         for (int i = 0; i < args.length; i++) {
             if (Integer.parseInt(args[i]) > 0) {
-                str = new int[j + 1];
+                rad = new int[j + 1];
                 for (int k = 0; k < j; k++) {
-                    str[k] = Integer.parseInt(args[k]);
+                    rad[k] = Integer.parseInt(args[k]);
                 }
-                str[i] = Integer.parseInt(args[j]);
+                rad[i] = Integer.parseInt(args[j]);
                 j++;
             } else {
                 System.out.print("Invalid Radius");
                 return;
             }
         }
-        if (str == null) {
+        if (rad == null) {
             return;
         }
-        drawAnimation(str);
+        drawAnimation(rad);
     }
 
 }
