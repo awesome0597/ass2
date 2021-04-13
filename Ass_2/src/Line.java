@@ -28,7 +28,6 @@ public class Line {
 
     // Returns the middle point of the line
     public Point middle() {
-
         double x = (this.start.getX() + this.end.getX()) / 2;
         double y = (this.start.getY() + this.end.getY()) / 2;
         return new Point(x, y);
@@ -169,7 +168,7 @@ public class Line {
         if (m2 != m1) {
             x = ((n2 - n1) / (m1 - m2));
         } else {
-          //  x = (other.start.getY() - n1) / m1;
+            //  x = (other.start.getY() - n1) / m1;
             return null;
         }
         if (((x >= this.start.getX() && x <= this.end.getX()) || (x >= this.end.getX() && x <= this.start.getX())) && ((x >= other.start.getX() && x <= other.end.getX()) || (x >= other.end.getX() && x <= other.start.getX()))) {
