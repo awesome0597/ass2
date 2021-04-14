@@ -1,5 +1,6 @@
 import biuoop.DrawSurface;
 import biuoop.GUI;
+
 import java.awt.Color;
 import java.util.Random;
 
@@ -22,7 +23,7 @@ public class MultipleFramesBouncingBallsAnimation {
      *
      * @return type Color
      */
-    static private Color getRandomColor() {
+    private static Color getRandomColor() {
         Random rand = new Random();
         float r = rand.nextFloat();
         float g = rand.nextFloat();
@@ -31,66 +32,75 @@ public class MultipleFramesBouncingBallsAnimation {
     }
 
     /**
-     Function that creates a new ball to be drawn on the GUI surface. first there is a validity check to make sure the
+     * Function that creates a new ball to be drawn on the GUI surface. first there is a validity check to make sure the
      * ball fit inside the allotted frame. If radius is too big it is then reset to the maximum value it can be so that
      * it will fit in its frame and still have movement. For example, if i have a 200*200 frame and my given radius is
      * 100, the radius will be reset to '200 / 2 - 1 = 99'.
      *
-     * @param r type int, the radius received from the cmd for a ball
-     * @param min type int, minimum value of point of frame
-     * @param max type int, maximum value of point of frame
+     * @param r     type int, the radius received from the cmd for a ball
+     * @param frame type Frame, set the borders the ball can be created in
      * @return new Ball
      */
-    static private Ball createNewBall(int r, int min, int max) {
+    private static Ball createNewBall(int r, Frame frame) {
         java.util.Random rand = new java.util.Random();
-        if (r * 2 >= max - min) {
-            r = (max - min) / 2 - 1;
-        }
+        if (r * 2 >= frame.getWidth() || r * 2 >= frame.getHeight()) {
+            if (frame.getWidth() >= frame.getHeight()) {
+                r = ((int) frame.getHeight()) / 2 - 1;
+            } else {
+                r = ((int) frame.getWidth()) / 2 - 1;
+            }
 
-        return (new Ball(new Point(rand.nextInt((max - min) - 2 * r - 1) + r + min,
-                rand.nextInt((max - min) - 2 * r - 1) + r + min), r, getRandomColor()));
+        }
+        return new Ball(new Point((rand.nextInt(((int) frame.getWidth()) - 2 * r - 1)
+                + ((int) frame.getMinX()) + r), (rand.nextInt(((int) frame.getHeight()) - 2 * r - 1)
+                + ((int) frame.getMinY()) + r)), r, getRandomColor());
+
+//        return new Ball(new Point(rand.nextInt(((int)(frame.getWidth() - 2 * r - 1) + r + ((int)frame.getMinX()),
+//                rand.nextInt((int)(frame.getHeight() - 2 * r - 1) + r + (int)frame.getMinY())))),
+//                r, getRandomColor());
     }
 
     /**
-     * frame is created based on min and max value received based on Frame class.
+     * square frame is created based on min and max value received.
      *
-     * @param min type int, minimum value of point for frame
-     * @param max type int, maximum value of point for frame
+     * @param min   type Point, minimum value of point for frame
+     * @param max   type Point, maximum value of point for frame
      * @param color type Color
      * @return new frame
      */
-    static private Frame createNewFrame(double min, double max, Color color) {
-        return (new Frame(new Point(min, min), new Point(min, max), new Point(max, max),
-                new Point(max, min), color));
+    private static Frame createNewFrame(Point min, Point max, Color color) {
+        return (new Frame(min.getX(), min.getY(), max.getX(), max.getY(), color));
     }
 
     /**
      * A GUI is created in size 650*650 (no specific size was given), and a  sleeper is created to give the illusion of
-     * a moving picture and a Random number generator is created. A new frame is created based on the dimensions of the
-     * GUI window ,and a ball is created using the radii received from the main in the array str.
-     * A loop runs through all the radii in the array creating a new variable of type Ball using the function
-     * createNewBall, and giving them a corresponding velocity in relation to their size (the bigger the ball the slower
-     * it goes, note the speed of balls bigger and including 50 have a set speed),
-     * Then velocity is converted from 'speed' and 'angle' to dx, dy using the fromSpeedAndAngle function in velocity,
-     * and it is assigned to ball. We then enter the loop that draws the animation. First we call changeVelocity so
-     * moveOneStep won't send the ball out of the frame (both methods reside in Ball class). We then create our
-     * drawSurface draw the Ball on it and have it shown to the user. Then there is a sleeper to give the illusion of
-     * a smooth moving ball across the screen.
+     * a moving picture and a Random number generator is created. Two frames are created, one between the coordinates
+     * (50,50) to (500,500) and the second between (450,450) (600,600) and are given the colors gray and yellow
+     * respectively. A loop runs through all the radii in the array creating a new variable of type Ball using the
+     * functioמ createNewBall, and giving them a corresponding velocity in relation to their size (the bigger the ball
+     * the slower it goes, note the speed of balls bigger and including 50 have a set speed),
+     * Then velocity is received in the form 'speed' and 'angle' and is converted to dx, dy using the fromSpeedAndAngle
+     * function in Velocity, and it is assigned to ball. Create new ball also receives a frame indicating
+     * what the limits for the center can be. The first half of the array is sent with the values from the first frame
+     * and the second half with those from the second frame. We then enter the loop that draws the animation. First we
+     * call changeVelocity so moveOneStep won't send the ball out of the frame (both methods reside in Ball class). We
+     * then create our drawSurface, draw the Ball on it and have it shown to the user. Then there is a sleeper to give
+     * the illusion of a smooth moving ball across the screen.
      *
      * @param str type int[], contains all the radii of potential new Balls
      */
-    static private void drawAnimation(int[] str) {
+    private static void drawAnimation(int[] str) {
         GUI gui = new GUI("title", 650, 650);
         biuoop.Sleeper sleeper = new biuoop.Sleeper();
         java.util.Random rand = new java.util.Random();
-        Frame one = createNewFrame(50, 500, Color.GRAY);
-        Frame two = createNewFrame(450, 600, Color.YELLOW);
+        Frame one = createNewFrame(new Point(50, 50), new Point(500, 500), Color.GRAY);
+        Frame two = createNewFrame(new Point(450, 450), new Point(600, 600), Color.YELLOW);
         Ball[] balls = new Ball[str.length];
         for (int i = 0; i < str.length; i++) {
             if (i < str.length / 2) {
-                balls[i] = createNewBall(str[i], 50, 500);
+                balls[i] = createNewBall(str[i], one);
             } else {
-                balls[i] = createNewBall(str[i], 450, 600);
+                balls[i] = createNewBall(str[i], two);
             }
             double speed = 51 - balls[i].getSize();
             if (balls[i].getSize() >= 50) {
@@ -135,7 +145,7 @@ public class MultipleFramesBouncingBallsAnimation {
             for (int k = 0; k < i; k++) {
                 rad[k] = Integer.parseInt(args[k]);
             }
-            if (Integer.parseInt(args[i]) > 0) {
+            if (Integer.parseInt(args[i]) >= 0) {
                 rad[i] = Integer.parseInt(args[i]);
             } else {
                 rad[i] = rand.nextInt(299) + 1;

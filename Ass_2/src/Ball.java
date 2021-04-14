@@ -121,13 +121,13 @@ public class Ball {
         Ball tmp = this;
         tmp.moveOneStep();
         //check for x axis
-        if (tmp.getY() - tmp.getSize() <= one.getBleft().getY()
-                || tmp.getY() + tmp.getSize() >= one.getTright().getY()) {
+        if (tmp.getY() - tmp.getSize() <= one.getMin().getY()
+                || tmp.getY() + tmp.getSize() >= one.getMax().getY()) {
             this.setVelocity(this.v.getDx(), (-1) * this.v.getDy());
         }
         //check for y axis
-        if (tmp.getX() - tmp.getSize() <= one.getBleft().getX()
-                || tmp.getX() + tmp.getSize() >= one.getTright().getX()) {
+        if (tmp.getX() - tmp.getSize() <= one.getMin().getX()
+                || tmp.getX() + tmp.getSize() >= one.getMax().getX()) {
             this.setVelocity((-1) * this.v.getDx(), this.v.getDy());
         }
 

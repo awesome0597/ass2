@@ -1,5 +1,6 @@
 import biuoop.DrawSurface;
 import biuoop.GUI;
+
 import java.awt.Color;
 import java.util.Random;
 
@@ -22,7 +23,7 @@ public class MultipleBouncingBallsAnimation {
      *
      * @return type Color
      */
-    static private Color getRandomColor() {
+    private static Color getRandomColor() {
         Random rand = new Random();
         float r = rand.nextFloat();
         float g = rand.nextFloat();
@@ -39,7 +40,7 @@ public class MultipleBouncingBallsAnimation {
      * @param r type int, the radius received from the cmd for a ball
      * @return new Ball
      */
-    static private Ball createNewBall(int r) {
+    private static Ball createNewBall(int r) {
         java.util.Random rand = new java.util.Random();
         if (r * 2 >= 600) {
             r = 600 / 2 - 1;
@@ -64,12 +65,13 @@ public class MultipleBouncingBallsAnimation {
      *
      * @param str type int[], contains all the radii of potential new Balls
      */
-    static private void drawAnimation(int[] str) {
+
+    private static void drawAnimation(int[] str) {
         GUI gui = new GUI("title", 600, 600);
         biuoop.Sleeper sleeper = new biuoop.Sleeper();
         java.util.Random rand = new java.util.Random();
         Ball[] balls = new Ball[str.length];
-        Frame one = new Frame(new Point(0, 0), new Point(0, 600), new Point(600, 600), new Point(600, 0), null);
+        Frame one = new Frame(0, 0, 600, 600, null);
         for (int i = 0; i < str.length; i++) {
             balls[i] = createNewBall(str[i]);
             double speed = 51 - balls[i].getSize();
@@ -94,7 +96,7 @@ public class MultipleBouncingBallsAnimation {
 
     /**
      * Receives args that are converted to an array of int[] and sent to the function drawAnimation. validity check
-     * that args isn't null and that all radii are valid (>0), if not a random size is assigned to the radius instead
+     * that args isn't null and that all radii are valid (>=0), if not a random size is assigned to the radius instead
      * (per instructions given from question 261 in Piazza).
      *
      * @param args array of strings containing an unset amount of arguments that must be bigger then 0
@@ -111,7 +113,7 @@ public class MultipleBouncingBallsAnimation {
             for (int k = 0; k < i; k++) {
                 rad[k] = Integer.parseInt(args[k]);
             }
-            if (Integer.parseInt(args[i]) > 0) {
+            if (Integer.parseInt(args[i]) >= 0) {
                 rad[i] = Integer.parseInt(args[i]);
             } else {
                 rad[i] = rand.nextInt(299) + 1;

@@ -1,42 +1,38 @@
 import biuoop.DrawSurface;
+
 import java.awt.Color;
 
 /**
  * name: Adira Weiss.
  * id: 322094111
- * version 2.0.1
- * date: 13/4/21
+ * version 23.0.1
+ * date: 14/4/21
  *
  * <p>
  * a Class that creates the frame that can limit the area of a window that a ball can move around in. A frame is made up
- * of four Point the bottom left (min,min), top left(min,max), top right(max,max), bottom right(max,min) and a color.
- * the names correspond to the first quarter of a Cartesian coordinate system. All the point of the frame can be
- * accessed (and as such so can their x and y values, because they are of type Point), and the Height and Width can be
- * calculated. The frame can be drawn on a drawSurface.
+ * of two points the minimum point (x1,y1), containing the minimum values of x and y, maximum containing the max values
+ * of x and y and a color. All the point of the frame can be found , the x and y values of min and max can be accessed,
+ * and the Height and Width can be calculated. The frame can be drawn on a drawSurface.
  **/
 public class Frame {
 
-    private Point bleft;
-    private Point tleft;
-    private Point tright;
-    private Point bright;
+    private Point min;
+    private Point max;
     private java.awt.Color color;
 
 
     /**
      * constructor.
      *
-     * @param bleft  Point, bottom left corner of frame
-     * @param tleft  Point, top left corner of frame
-     * @param tright Point, top right corner of frame
-     * @param bright Point, bottom left corner of frame
-     * @param color  type Color
+     * @param x1    double x value of min
+     * @param y1    double y value of min
+     * @param x2    double x value of max
+     * @param y2    double y value of max
+     * @param color gives the frame a color if desired
      */
-    public Frame(Point bleft, Point tleft, Point tright, Point bright, java.awt.Color color) {
-        this.tleft = tleft;
-        this.tright = tright;
-        this.bright = bright;
-        this.bleft = bleft;
+    public Frame(double x1, double y1, double x2, double y2, java.awt.Color color) {
+        this.min = new Point(x1, y1);
+        this.max = new Point(x2, y2);
         this.color = color;
     }
 
@@ -52,54 +48,74 @@ public class Frame {
     /**
      * accessor.
      *
-     * @return bottom left corner
+     * @return the min point of the frame
      */
-    public Point getBleft() {
-        return this.bleft;
+    public Point getMin() {
+        return this.min;
     }
+
+    /**
+     * gets the x value of the minimum point.
+     *
+     * @return double
+     */
+    public double getMinX() {
+        return this.min.getX();
+    }
+
+    /**
+     * returns the y value of the minimum point.
+     *
+     * @return double
+     */
+    public double getMinY() {
+        return this.min.getY();
+    }
+
 
     /**
      * accessor.
      *
-     * @return bottom right corner
+     * @return the max point of the frame
      */
-    public Point getBright() {
-        return this.bright;
+    public Point getMax() {
+        return this.max;
     }
 
     /**
-     * accessor.
+     * finds the point with the x value of min and the y value of max.
      *
-     * @return top left corner
+     * @return new Point with the the x value of min and the y value of max
      */
-    public Point getTleft() {
-        return this.tleft;
+    public Point getMinMax() {
+        return new Point(min.getX(), max.getY());
     }
 
     /**
-     * accessor.
+     * finds the point with the x value of max and the y value of min.
      *
-     * @return top right corner
+     * @return new Point with the the x value of max and the y value of min
      */
-    public Point getTright() {
-        return this.tright;
+    public Point getMaxMin() {
+        return new Point(max.getX(), min.getY());
     }
 
     /**
      * calculates width of frame using distance method from point.
      *
-     * @return width of frame
+     * @return double
      */
     public double getWidth() {
-        return (this.bleft.distance(this.bright));
+        return (this.min.distance(this.getMinMax()));
     }
 
     /**
      * calculates height of frame using distance method from point.
-     * @return height of frame
+     *
+     * @return double
      */
     public double getHeight() {
-        return (this.bleft.distance(this.tleft));
+        return (this.min.distance(this.getMaxMin()));
     }
 
     /**
@@ -109,7 +125,7 @@ public class Frame {
      */
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.getColor());
-        surface.fillRectangle((int) this.bleft.getX(), (int) this.bleft.getY(),
+        surface.fillRectangle((int) this.min.getX(), (int) this.min.getY(),
                 (int) this.getWidth(), (int) this.getHeight());
     }
 }
