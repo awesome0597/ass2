@@ -23,7 +23,7 @@ public class Rectangle {
         if (line.intersectionWith(new Line(this.getUpperLeft(), this.getBottomLeft())) != null) {
             a.add(line.intersectionWith(new Line(this.getUpperLeft(), this.getBottomLeft())));
         }
-        if (line.intersectionWith(new Line(this.getUpperLeft(), this.getUpperRight())) != null) {
+        if (line.intersectionWith(new Line(this.getUpperRight(), this.getUpperLeft())) != null) {
             a.add(line.intersectionWith(new Line(this.getUpperLeft(), this.getUpperRight())));
         }
         if (line.intersectionWith(new Line(this.getUpperRight(), this.getBottomRight())) != null) {
@@ -61,7 +61,7 @@ public class Rectangle {
     }
 
     public Point getUpperRight() {
-        return new Point(this.upperLeft.getX() + getWidth(), this.upperLeft.getY() + getHeight());
+        return new Point(this.upperLeft.getX() + this.getWidth(), this.upperLeft.getY());
     }
 
     public void drawOn(DrawSurface surface) {

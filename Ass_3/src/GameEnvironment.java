@@ -25,9 +25,10 @@ public class GameEnvironment {
     public CollisionInfo getClosestCollision(Line trajectory) {
        Point collisionPoint = trajectory.end();
        Collidable collisionObject = null;
-       if (this.listOfCollidables.size() != 0){
+       if (this.listOfCollidables.size() > 0){
            for (Collidable x: listOfCollidables){
-               if (x.getCollisionRectangle().intersectionPoints(trajectory).size() != 0){
+               List<Point> temp = x.getCollisionRectangle().intersectionPoints(trajectory);
+               if (temp.size() != 0){
                    Point tmp = trajectory.closestIntersectionToStartOfLine(x.getCollisionRectangle());
                    if (trajectory.start().distance(tmp) < trajectory.start().distance(collisionPoint) && tmp != null){
                        collisionPoint = tmp;
