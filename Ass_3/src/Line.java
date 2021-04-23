@@ -116,10 +116,11 @@ public class Line {
             int index = 0;
             for (int i = 1; i < a.size(); i++) {
                 double tmp = this.start.distance(a.get(i));
-                if (tmp <= dis){
+                if (tmp <= dis) {
                     dis = tmp;
                     index = i;
-                };
+                }
+                ;
             }
             return a.get(index);
         }

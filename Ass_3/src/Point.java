@@ -44,6 +44,7 @@ public class Point {
     public double getY() {
         return this.y;
     }
+
     /**
      * Method that calculate this distance between point and 'other'.
      *

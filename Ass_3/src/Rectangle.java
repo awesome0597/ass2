@@ -1,5 +1,17 @@
-import biuoop.DrawSurface;
+/**
+ * name: Adira Weiss.
+ * id: 322094111
+ * version 1.0.1
+ * date: 22/4/21
+ *
+ * <p>
+ * Class that creates a Rectangle made up of two double variables (height and width) and the top left corner of the
+ * rectangle. All values can be accessed. there is a method to calculate the remaining three points of the rectangle.
+ * There is a method that finds all the intersection points of one line with the rectangle, and a method to draw the
+ * rectangle on a draw surface.
+ **/
 
+import biuoop.DrawSurface;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +20,35 @@ public class Rectangle {
     private Point upperLeft;
     private double width;
     private double height;
+    private java.awt.Color color;
 
-    // Create a new rectangle with location and width/height.
+
+    /**
+     * constructor.
+     * @param upperLeft type Point. Upper left point of rectangle.
+     * @param width type Double. Width of rectangle.
+     * @param height type Double. Height of rectangle.
+     */
     public Rectangle(Point upperLeft, double width, double height) {
         this.upperLeft = upperLeft;
         this.width = width;
         this.height = height;
     }
 
-    // Return a (possibly empty) List of intersection points
-    // with the specified line.
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return this.color;
+    }
+
+    /**
+     * Return a (possibly empty) List of intersection points with the specified line.
+     * checks if the intersection function returns a point. If it does its added to the list of points.
+     * @param line type Line. The line with which we check the rectangle has intersection points with
+     * @return
+     */
     public java.util.List<Point> intersectionPoints(Line line) {
         List<Point> a = new ArrayList<>();
         if (line.intersectionWith(new Line(this.getUpperLeft(), this.getBottomLeft())) != null) {
@@ -35,40 +66,60 @@ public class Rectangle {
         return a;
     }
 
-    // Return the width and height of the rectangle
+
+    /**
+     * accessor.
+     *
+     * @return type double. width of the rectangle.
+     */
     public double getWidth() {
         return this.width;
     }
 
+    /**
+     * accessor.
+     *
+     * @return type double. height of the rectangle.
+     */
     public double getHeight() {
         return this.height;
     }
 
-    // Returns the upper-left point of the rectangle.
+    /**
+     * accessor.
+     *
+     * @return type Point. Upper left point of the rectangle.
+     */
     public Point getUpperLeft() {
         return this.upperLeft;
     }
 
-
+    /**
+     * calculates the bottom left corner of the rectangle.
+     * @return type Point.
+     */
     public Point getBottomLeft() {
 
         return new Point(this.upperLeft.getX(), this.upperLeft.getY() + getHeight());
 
     }
 
+    /**
+     * calculates the bottom right corner of the rectangle.
+     * @return type Point.
+     */
     public Point getBottomRight() {
         return new Point(this.upperLeft.getX() + this.getWidth(), this.upperLeft.getY() + getHeight());
     }
 
+    /**
+     * calculates the top right corner of the rectangle.
+     * @return type Point.
+     */
     public Point getUpperRight() {
         return new Point(this.upperLeft.getX() + this.getWidth(), this.upperLeft.getY());
     }
 
-    public void drawOn(DrawSurface surface) {
-        surface.setColor(Color.BLUE);
-        surface.fillRectangle((int) this.getUpperLeft().getX(), (int) this.getUpperLeft().getY(),
-                (int) this.getWidth(), (int) this.getHeight());
-    }
 
 
 }

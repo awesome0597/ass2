@@ -55,10 +55,16 @@ public class Velocity {
      * @param speed type double, the length of the vector representing the velocity
      * @return type Velocity, returns the conversion of angle and speed to dx, dy
      */
-    public static Velocity fromAngleAndSpeed(double angle, double speed) {
+    public Velocity fromAngleAndSpeed(double angle, double speed) {
         double dx = (speed * Math.cos(Math.toRadians(angle - 90)));
         double dy = (speed * Math.sin(Math.toRadians(angle - 90)));
         return new Velocity(dx, dy);
+    }
+
+    public Velocity fromDxDy() {
+        double speed = new Point(this.dx, this.dy).distance(new Point(2 * this.dx, 2 * this.dy));
+        double angle = Math.toDegrees(Math.acos(Math.toRadians(this.dx / speed))) - 90;
+        return new Velocity(angle, speed);
     }
 
 
