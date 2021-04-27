@@ -244,10 +244,10 @@ public class Line {
     }
 
     public Point intersectionWith(Line other) {
-        if (((isXInRange(this, other.start.getX()) || isXInRange(this, other.end.getX()))
-                && (isYInRange(this, other.start.getY()) || isYInRange(this, other.end.getY())))) {
-            return null;
-        }
+//        if (((isXInRange(this, other.start.getX()) || isXInRange(this, other.end.getX()))
+//                && (isYInRange(this, other.start.getY()) || isYInRange(this, other.end.getY())))) {
+//            return null;
+//        }
         if (isParallelX(this) && isParallelX(other) || isParallelY(this) && isParallelY(other)) {
             if (isLineContainedY(this, other) || isLineContainedX(this, other)) {
                 return null;

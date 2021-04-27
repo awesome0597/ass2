@@ -137,10 +137,12 @@ public class Game {
         Point three = new Point(780, 20);
         Point four = new Point(0, 20);
         List<Block> blockList = new ArrayList<>();
-        blockList.add(new Block(new Rectangle(one, 800, 20, Color.GRAY)));
         blockList.add(new Block(new Rectangle(two, 760, 20, Color.GRAY)));
         blockList.add(new Block(new Rectangle(four, 20, 580, Color.GRAY)));
         blockList.add(new Block(new Rectangle(three, 20, 580, Color.GRAY)));
+        blockList.add(new Block(new Rectangle(one, 800, 20, Color.GRAY)));
+
+
         for (Block x : blockList) {
             x.addToGame(this);
         }
@@ -152,10 +154,16 @@ public class Game {
      * and add them to the game.
      */
     public void initialize() {
-        Ball ball = new Ball(new Point(400, 500), 5, Color.MAGENTA);
-        Velocity v = Velocity.fromAngleAndSpeed(180,5);
-        ball.setVelocity(v);
-        ball.addToGame(this);
+        Ball ball1 = new Ball(new Point(20, 580), 5, Color.MAGENTA);
+//        Velocity v1 = Velocity.fromAngleAndSpeed(45,5);
+         Velocity v1  = new Velocity(-4,4);
+        ball1.setVelocity(v1);
+        ball1.addToGame(this);
+        Ball ball2 = new Ball(new Point(760, 560), 5, Color.MAGENTA);
+//        Velocity v2 = Velocity.fromAngleAndSpeed(45,5);
+         Velocity v2  = new Velocity(4,4);
+        ball2.setVelocity(v2);
+        ball2.addToGame(this);
         addObstacleBlock();
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
         paddle.getCollisionRectangle().setColor(Color.YELLOW);

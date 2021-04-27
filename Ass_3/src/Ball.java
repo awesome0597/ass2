@@ -135,11 +135,11 @@ public class Ball implements Sprite {
      */
     public void drawOn(DrawSurface surface) {
         //draw full black shape fpr outline
-        surface.setColor(Color.BLACK);
+        surface.setColor(this.getColor());
         surface.fillCircle((int) this.center.getX(), (int) this.center.getY(), this.getSize());
         //draw shape with 1 width border
-        surface.setColor(this.getColor());
-        surface.fillCircle((int) this.center.getX(), (int) this.center.getY(), this.getSize() - 1);
+        surface.setColor(Color.BLACK);
+        surface.drawCircle((int) this.center.getX(), (int) this.center.getY(), this.getSize() - 1);
     }
 
     /**

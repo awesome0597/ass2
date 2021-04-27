@@ -140,7 +140,7 @@ public class Rectangle {
         if (line.intersectionWith(new Line(this.getUpperLeft(), this.getBottomLeft())) != null) {
             a.add(line.intersectionWith(new Line(this.getUpperLeft(), this.getBottomLeft())));
         }
-        if (line.intersectionWith(new Line(this.getUpperRight(), this.getUpperLeft())) != null) {
+        if (line.intersectionWith(new Line(this.getUpperLeft(), this.getUpperRight())) != null) {
             a.add(line.intersectionWith(new Line(this.getUpperLeft(), this.getUpperRight())));
         }
         if (line.intersectionWith(new Line(this.getUpperRight(), this.getBottomRight())) != null) {
