@@ -1,12 +1,14 @@
+//322094111
+
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 1.0.1
- * date: 13/4/21
- *
+ * @author Adira Weiss.
+ * @version 2.0.1
+ * @since: 27/4/21
+ * Class that creates a point.
  * <p>
  * Class that creates a point made up of two double variables (x,y). both values can be accessed. there is a method to
- * calculate the distance between a point and another point, and a method to check if they are equal.
+ * calculate the distance between a point and another point, and a method to check if they are equal, an epsilon
+ * member exists to make up for type double inaccuracies in calculations.
  **/
 
 public class Point {

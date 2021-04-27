@@ -1,3 +1,5 @@
+//322094111
+
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
@@ -8,13 +10,13 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 1.0.1
- * date: 22/4/21
- *
- * <p>
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 27/4/21
  * Class that creates a game.
+ * <p>
+ * Class that creates a game, its members are a game, sprite, GUI and sleeper. It initializes the game, adds all the
+ * components that make it up (ball, blocks and paddle), and then runs them.
  **/
 
 public class Game {
@@ -29,7 +31,7 @@ public class Game {
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
-        this.gui = new GUI("title", 800, 600);
+        this.gui = new GUI("blah blah blah, joke joke joke, commentary.", 800, 600);
         this.sleeper = new Sleeper();
     }
 
@@ -133,12 +135,12 @@ public class Game {
     public void initialize() {
         Ball ball1 = new Ball(new Point(20, 580), 5, Color.MAGENTA);
 //        Velocity v1 = Velocity.fromAngleAndSpeed(45,5);
-         Velocity v1  = new Velocity(-4,4);
+        Velocity v1 = new Velocity(-4, 4);
         ball1.setVelocity(v1);
         ball1.addToGame(this);
         Ball ball2 = new Ball(new Point(760, 560), 5, Color.MAGENTA);
 //        Velocity v2 = Velocity.fromAngleAndSpeed(45,5);
-         Velocity v2  = new Velocity(4,4);
+        Velocity v2 = new Velocity(4, 4);
         ball2.setVelocity(v2);
         ball2.addToGame(this);
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
@@ -174,9 +176,5 @@ public class Game {
      *
      * @param args not received
      */
-    public static void main(String[] args) {
-        Game game = new Game();
-        game.initialize();
-        game.run();
-    }
+
 }

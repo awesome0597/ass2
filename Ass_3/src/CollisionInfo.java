@@ -1,9 +1,10 @@
+//322094111
+
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 1.0.1
- * date: 22/4/21
- *
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 26/4/21
+ * Class that creates a CollisionInfo.
  * <p>
  * Class that creates collision info consisting of a collision point and the object that is collided with at that point.
  **/

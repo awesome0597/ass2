@@ -1,12 +1,14 @@
+//322094111
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 1.0.2
- * date: 7/4/21
- *
+ * @author Adira Weiss.
+ * @version 6.0.1
+ * @since: 27/4/21
+ * <p>
+ * Class that creates a Line.
  * <p>
  * A class that creates a line. A line is made up of two points, a start and an end (not an indication for which is
  * bigger or smaller they just signify the limits within which the line is contained). Both start and end can be
@@ -126,12 +128,27 @@ public class Line {
 
     }
 
-
+    /**
+     * Helper method for intersectionWith.
+     * checks if y value is in lines range.
+     *
+     * @param one type Line
+     * @param y   type double
+     * @return true or false
+     */
     private boolean isYInRange(Line one, double y) {
         return ((y >= one.start.getY()) && (y <= one.end.getY()))
                 || ((y <= one.start.getY()) && (y >= one.end.getY()));
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * checks if x value is in lines range.
+     *
+     * @param one type Line
+     * @param x   type double
+     * @return true or false
+     */
     private boolean isXInRange(Line one, double x) {
         return ((x >= one.start.getX())
                 && (x <= one.end.getX()))
@@ -139,22 +156,60 @@ public class Line {
                 && (x >= one.end.getX()));
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * checks if a line is parallel to the X axis.
+     *
+     * @param line type Line
+     * @return true or false
+     */
     private boolean isParallelX(Line line) {
         return Math.abs(line.start.getY() - line.end.getY()) <= epsilon;
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * checks if a line is parallel to the Y axis.
+     *
+     * @param line type Line
+     * @return true or false
+     */
     private boolean isParallelY(Line line) {
         return Math.abs(line.start.getX() - line.end.getX()) <= epsilon;
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * calculates the slope of a line.
+     *
+     * @param line type line
+     * @return type double (the slope)
+     */
     private double getSlope(Line line) {
         return (line.start.getY() - line.end.getY()) / (line.start.getX() - line.end.getX());
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * calculates the b value of a lines linear equation using the slope and a line.
+     *
+     * @param line type Line
+     * @param a    type double
+     * @return type double (b of linear equation)
+     */
     private double getB(Line line, double a) {
         return line.start.getY() - (a * line.start.getX());
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * checks the case that only one of the lines is parallel to either the Y or X axis
+     * and sends to accommodating method.
+     * returns the point of intersection if exists or null.
+     *
+     * @param other type Line
+     * @return type Point
+     */
     private Point oneOfLinesIsParallel(Line other) {
         if (isParallelY(this)) {
             return oneLineParallelY(this, other);
@@ -167,6 +222,14 @@ public class Line {
         }
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * Finds if there is an intersection point if line one is parallel to the X axis
+     *
+     * @param one type Line
+     * @param two type Line
+     * @return type Point
+     */
     private Point oneLineParallelX(Line one, Line two) {
         double a = getSlope(two);
         double b = two.start.getY() - (a * two.start.getX());
@@ -179,6 +242,14 @@ public class Line {
         return null;
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * Finds if there is an intersection point if line one is parallel to the Y axis
+     *
+     * @param one type Line
+     * @param two type Line
+     * @return type Point
+     */
     private Point oneLineParallelY(Line one, Line two) {
         double a = getSlope(two);
         double b = two.start.getY() - (a * two.start.getX());
@@ -191,18 +262,33 @@ public class Line {
         return null;
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * Checks case that both lines are parallel to opposite axes.
+     *
+     * @param other type Line
+     * @return type Point
+     */
     private Point bothLinesAreParallel(Line other) {
         if (isParallelX(this) && isParallelY(other)) {
-            if (isXInRange(this, other.start.getX()) && isYInRange(other, this.start.getY())){
+            if (isXInRange(this, other.start.getX()) && isYInRange(other, this.start.getY())) {
                 return new Point(other.start.getX(), this.start.getY());
             }
         } else {
-            if (isXInRange(other,this.start.getX()) && isYInRange(this, other.start.getY()))
-            return new Point(this.start.getX(), other.start.getY());
+            if (isXInRange(other, this.start.getX()) && isYInRange(this, other.start.getY())) {
+                return new Point(this.start.getX(), other.start.getY());
+            }
         }
         return null;
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * checks if any of the ends of either line are the same point.
+     *
+     * @param other type Line
+     * @return type Point
+     */
     private Point findCommonPoint(Line other) {
         if ((this.start.equals(other.start)) || (this.start.equals(other.end))) {
             return new Point(this.start.getX(), this.start.getY());
@@ -213,6 +299,14 @@ public class Line {
 
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * Checks if one lines Y values are contained within other lines Y values
+     *
+     * @param one type Line
+     * @param two type Line
+     * @return true or false
+     */
     private boolean isLineContainedY(Line one, Line two) {
         if (((one.start.getY() > two.start.getY()) && (one.start.getY() < two.end.getY()))
                 || ((one.start.getY() < two.start.getY()) && (one.start.getY() > two.end.getY()))) {
@@ -224,6 +318,14 @@ public class Line {
         return false;
     }
 
+    /**
+     * Helper method for intersectionWith.
+     * Checks if one lines X values are contained within other lines X values
+     *
+     * @param one type Line
+     * @param two type Line
+     * @return true or false
+     */
     private boolean isLineContainedX(Line one, Line two) {
         if (((one.start.getX() > two.start.getX()) && (one.start.getX() < two.end.getX()))
                 || ((one.start.getX() < two.start.getX()) && (one.start.getX() > two.end.getX()))) {
@@ -235,19 +337,24 @@ public class Line {
         return false;
     }
 
-//    private boolean areEquationsSame(double a1, double a2, double b1, double b2) {
-//        return new Point(a1, b1).equals(new Point(a2, b2));
-//    }
-
+    /**
+     * Method that returns whether two lines have an intersecting point.
+     *
+     * @param other type Line
+     * @return true or false
+     */
     public boolean isIntersecting(Line other) {
         return (intersectionWith(other) != null);
     }
 
+    /**
+     * Method that finds if two lines have an intersecting point.
+     * if yes then method returns the point, else returns null.
+     *
+     * @param other type Line
+     * @return type Point or null
+     */
     public Point intersectionWith(Line other) {
-//        if (((isXInRange(this, other.start.getX()) || isXInRange(this, other.end.getX()))
-//                && (isYInRange(this, other.start.getY()) || isYInRange(this, other.end.getY())))) {
-//            return null;
-//        }
         if (isParallelX(this) && isParallelX(other) || isParallelY(this) && isParallelY(other)) {
             if (isLineContainedY(this, other) || isLineContainedX(this, other)) {
                 return null;
@@ -255,7 +362,7 @@ public class Line {
             return findCommonPoint(other);
         }
 
-        if (findCommonPoint(other)!=null){
+        if (findCommonPoint(other) != null) {
             return findCommonPoint(other);
         }
 

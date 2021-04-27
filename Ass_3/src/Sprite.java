@@ -1,17 +1,20 @@
+//322094111
+
 import biuoop.DrawSurface;
+
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 2.0.1
- * date: 23/4/21
- *
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 24/4/21
+ * Class that creates a Sprite.
  * <p>
- *  Sprites can be drawn on the screen, and can be notified that time has passed.
+ * Sprites can be drawn on the screen, and can be notified that time has passed.
  **/
 public interface Sprite {
 
     /**
      * draw the sprite to the screen.
+     *
      * @param d the drawsurface the sprites are drawn on.
      */
     void drawOn(DrawSurface d);

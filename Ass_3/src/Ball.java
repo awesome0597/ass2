@@ -41,10 +41,10 @@ public class Ball implements Sprite {
     /**
      * constructor.
      *
-     * @param v type Velocity
+     * @param velocity type Velocity
      */
-    public void setVelocity(Velocity v) {
-        this.v = v;
+    public void setVelocity(Velocity velocity) {
+        this.v = velocity;
     }
 
     /**
@@ -61,10 +61,10 @@ public class Ball implements Sprite {
     /**
      * adds game enviroment to ball.
      *
-     * @param g type GameEnvironment.
+     * @param gameEnviroment type GameEnvironment.
      */
-    public void setGameEnviroment(GameEnvironment g) {
-        this.g = g;
+    public void setGameEnviroment(GameEnvironment gameEnviroment) {
+        this.g = gameEnviroment;
     }
 
     /**
@@ -135,8 +135,8 @@ public class Ball implements Sprite {
                         && rightMost.getY() < center.getY()
                         && iHeight + rightMost.getY() > center.getY()) {
                     if (leftmost.getX() > 0) {
-                        this.center = new Point(collRec.getBottomLeft().getX() - 2,
-                                collRec.getBottomLeft().getX() + 2);
+                        this.center = new Point(collRec.getBottomLeft().getX() - 4,
+                                collRec.getBottomLeft().getX() + 4);
                     } else {
                         this.center = new Point(730, 50);
                     }

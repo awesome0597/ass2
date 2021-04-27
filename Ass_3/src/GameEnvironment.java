@@ -1,12 +1,12 @@
+//322094111
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 1.0.1
- * date: 22/4/21
- *
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 27/4/21
+ * Class that creates a game environment.
  * <p>
  * Class that creates a game environment. The game environment holds a list of all the 'collidable' objects, in the
  * given environment. The class can add new obstacles to the list, and can find the closest object to a possible

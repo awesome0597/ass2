@@ -1,9 +1,10 @@
+//322094111
+
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 2.0.1
- * date: 14/4/21
- *
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 27/4/21
+ * Class that creates a game.
  * <p>
  * A class to set or calculate and then set the Velocity of a Ball (or potentially and moving object). receives
  * variables of type Double dx and dy. Both can be accessed. A velocity represented as an angle and speed can be
@@ -69,20 +70,5 @@ public class Velocity {
     public Point applyToPoint(Point p) {
         return (new Point(p.getX() + this.dx, p.getY() + this.dy));
     }
-
-    public Point almostApplyToPoint(Point p) {
-        if (this.dx > 0 && this.dy > 0) {
-            return (new Point(p.getX() + this.dx - 1, p.getY() + this.dy - 1));
-        }
-        if (this.dx < 0 && this.dy > 0) {
-            return (new Point(p.getX() + this.dx + 1, p.getY() + this.dy - 1));
-        }
-        if (this.dx > 0 && this.dy < 0) {
-            return (new Point(p.getX() + this.dx - 1, p.getY() + this.dy + 1));
-        } else {
-            return (new Point(p.getX() + this.dx + 1, p.getY() + this.dy + 1));
-        }
-    }
-
 
 }

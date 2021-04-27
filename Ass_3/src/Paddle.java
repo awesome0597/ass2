@@ -1,3 +1,5 @@
+//322094111
+
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.KeyboardSensor;
@@ -6,13 +8,13 @@ import java.awt.Color;
 
 
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 2.0.1
- * date: 23/4/21
- *
+ * @author Adira Weiss.
+ * @version 4.0.1
+ * @since: 27/4/21
+ * Class that creates a game.
  * <p>
- *     this class creates a paddle
+ * Class that implements both the collidable and sprite methods. Its members are a rectangle (its shape), and a keyboard
+ * sensor allowing it to move on the screen during the game.
  **/
 
 
@@ -105,11 +107,11 @@ public class Paddle implements Sprite, Collidable {
         double paddlePart = (this.rect.getWidth() / 5 + paddleX);
         double speed = Math.sqrt(Math.pow(currentVelocity.getDx(), 2) + Math.pow(currentVelocity.getDy(), 2));
 
-        if (collisionPointX > this.rect.getBottomRight().getX() || collisionPointX < this.rect.getUpperLeft().getX()){
+        if (collisionPointX > this.rect.getBottomRight().getX() || collisionPointX < this.rect.getUpperLeft().getX()) {
             return new Velocity((-1) * currentVelocity.getDx(), (-1) * currentVelocity.getDy());
-        } else if (collisionPoint.getY() > this.rect.getUpperLeft().getY()){
+        } else if (collisionPoint.getY() > this.rect.getUpperLeft().getY()) {
             return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
-        }else if (collisionPointX <= paddlePart) {
+        } else if (collisionPointX <= paddlePart) {
             return Velocity.fromAngleAndSpeed(300, speed);
         } else if (collisionPointX <= 2 * paddlePart) {
             return Velocity.fromAngleAndSpeed(330, speed);
@@ -117,13 +119,12 @@ public class Paddle implements Sprite, Collidable {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
         } else if (collisionPointX <= 4 * paddlePart) {
             return Velocity.fromAngleAndSpeed(120, speed);
-        } else  {
+        } else {
             return Velocity.fromAngleAndSpeed(150, speed);
         }
 
     }
 
-    // Add this paddle to the game.
 
     /**
      * Add this paddle to the game.

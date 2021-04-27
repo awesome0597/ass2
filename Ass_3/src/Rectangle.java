@@ -1,20 +1,20 @@
+//322094111
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 1.0.1
- * date: 22/4/21
- *
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 27/4/21
+ * Class that creates a Rectangle.
  * <p>
  * Class that creates a Rectangle made up of two double variables (height and width) and the top left corner of the
  * rectangle. All values can be accessed. there is a method to calculate the remaining three points of the rectangle.
  * There is a method that finds all the intersection points of one line with the rectangle, and a method to draw the
  * rectangle on a draw surface.
  **/
-
 
 
 public class Rectangle {
@@ -37,6 +37,14 @@ public class Rectangle {
         this.height = height;
     }
 
+    /**
+     * constructor.
+     *
+     * @param upperLeft type Point
+     * @param width     type double
+     * @param height    type double
+     * @param color     type double
+     */
     public Rectangle(Point upperLeft, double width, double height, Color color) {
         this.upperLeft = upperLeft;
         this.width = width;
@@ -48,10 +56,10 @@ public class Rectangle {
     /**
      * constructor.
      *
-     * @param color type Color.
+     * @param colour type Color.
      */
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColor(Color colour) {
+        this.color = colour;
     }
 
     /**
@@ -122,10 +130,10 @@ public class Rectangle {
     /**
      * resets the upper left corner of a given rectangle.
      *
-     * @param upperLeft type Point.
+     * @param topLeft type Point.
      */
-    public void setUpperLeft(Point upperLeft) {
-        this.upperLeft = upperLeft;
+    public void setUpperLeft(Point topLeft) {
+        this.upperLeft = topLeft;
     }
 
     /**
