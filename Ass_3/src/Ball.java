@@ -120,8 +120,30 @@ public class Ball implements Sprite {
         tmp = this.g.getClosestCollision(new Line(this.center, this.getVelocity().applyToPoint(this.center)));
         if (tmp != null) {
             this.setVelocity(tmp.collisionObject().hit(tmp.collisionPoint(), this.v));
-//            this.center = this.getVelocity().applyToPoint(this.center);
-//            return;
+            if (this.g.getListOfCollidables().get(0).getCollisionRectangle().getUpperLeft().getY()
+                    < this.center.getY()) {
+                this.center = new Point(center.getX(), this.center.getY() - (this.r / 2));
+            }
+            for (int i = 1; i < g.getListOfCollidables().size(); i++) {
+                Rectangle collRec = g.getListOfCollidables().get(i).getCollisionRectangle();
+                Point leftmost = collRec.getUpperLeft();
+                Point rightMost = collRec.getUpperRight();
+                double iHeight = collRec.getHeight();
+                //spit ball out on opposite upper corner if gets trapped by the paddle
+                if (leftmost.getX() < center.getX()
+                        && rightMost.getX() > center.getX()
+                        && rightMost.getY() < center.getY()
+                        && iHeight + rightMost.getY() > center.getY()) {
+                    if (leftmost.getX() > 0) {
+                        this.center = new Point(collRec.getBottomLeft().getX() - 2,
+                                collRec.getBottomLeft().getX() + 2);
+                    } else {
+                        this.center = new Point(730, 50);
+                    }
+                }
+            }
+            this.center = this.getVelocity().applyToPoint(this.center);
+            return;
         }
         this.center = this.getVelocity().applyToPoint(this.center);
 

@@ -101,29 +101,6 @@ public class Game {
             start = new Point(start.getX() - width, start.getY() - height);
             numOfCollums++;
         }
-
-//        int numOfRows = 6;
-//        int numOfBlocks = 7;
-//        int maxNumOfBlocks = 12;
-//        double blockWidth = 50;
-//        double blockHeight = 30;
-//        double nextX = 800 - 20 - blockWidth;
-//        double nextY = 300 - blockHeight;
-//
-//        // Create the pattern blocks and add them to game
-//        for (int i = 0; i < numOfRows; i++) {
-//            Color newColor = getRandomColor();
-//            for (int j = 0; (j < numOfBlocks) && (numOfBlocks <= maxNumOfBlocks); j++) {
-//                Rectangle newRect = new Rectangle(new Point(nextX, nextY), blockWidth, blockHeight);
-//                newRect.setColor(newColor);
-//                Block newBlock = new Block(newRect);
-//                newBlock.addToGame(this);
-//                nextX = nextX - blockWidth;
-//            }
-//            nextY = nextY - blockHeight;
-//            numOfBlocks++;
-//            nextX = 800 - 20 - blockWidth;
-//        }
         addBorderBlock();
     }
 
@@ -164,10 +141,10 @@ public class Game {
          Velocity v2  = new Velocity(4,4);
         ball2.setVelocity(v2);
         ball2.addToGame(this);
-        addObstacleBlock();
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
         paddle.getCollisionRectangle().setColor(Color.YELLOW);
         paddle.addToGame(this);
+        addObstacleBlock();
     }
 
     /**

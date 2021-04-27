@@ -254,6 +254,11 @@ public class Line {
             }
             return findCommonPoint(other);
         }
+
+        if (findCommonPoint(other)!=null){
+            return findCommonPoint(other);
+        }
+
         if (isParallelX(this) && isParallelY(other) || isParallelX(other) && isParallelY(this)) {
             return bothLinesAreParallel(other);
         }
