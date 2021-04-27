@@ -120,7 +120,8 @@ public class Ball implements Sprite {
         tmp = this.g.getClosestCollision(new Line(this.center, this.getVelocity().applyToPoint(this.center)));
         if (tmp != null) {
             this.setVelocity(tmp.collisionObject().hit(tmp.collisionPoint(), this.v));
-            return;
+//            this.center = this.getVelocity().applyToPoint(this.center);
+//            return;
         }
         this.center = this.getVelocity().applyToPoint(this.center);
 

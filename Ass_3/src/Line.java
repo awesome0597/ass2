@@ -193,10 +193,14 @@ public class Line {
 
     private Point bothLinesAreParallel(Line other) {
         if (isParallelX(this) && isParallelY(other)) {
-            return new Point(other.start.getX(), this.start.getY());
+            if (isXInRange(this, other.start.getX()) && isYInRange(other, this.start.getY())){
+                return new Point(other.start.getX(), this.start.getY());
+            }
         } else {
+            if (isXInRange(other,this.start.getX()) && isYInRange(this, other.start.getY()))
             return new Point(this.start.getX(), other.start.getY());
         }
+        return null;
     }
 
     private Point findCommonPoint(Line other) {

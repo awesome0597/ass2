@@ -152,8 +152,8 @@ public class Game {
      * and add them to the game.
      */
     public void initialize() {
-        Ball ball = new Ball(new Point(400, 100), 5, Color.MAGENTA);
-        Velocity v = Velocity.fromAngleAndSpeed(80,3);
+        Ball ball = new Ball(new Point(400, 500), 5, Color.MAGENTA);
+        Velocity v = Velocity.fromAngleAndSpeed(180,5);
         ball.setVelocity(v);
         ball.addToGame(this);
         addObstacleBlock();
