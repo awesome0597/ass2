@@ -52,9 +52,9 @@ public class Velocity {
      * @param speed type double, the length of the vector representing the velocity
      * @return type Velocity, returns the conversion of angle and speed to dx, dy
      */
-    public Velocity fromAngleAndSpeed(double angle, double speed) {
-        double dx = (speed * Math.sin(angle * Math.PI / 180));
-        double dy = (-speed * Math.cos(angle * Math.PI / 180));
+    public static Velocity fromAngleAndSpeed(double angle, double speed) {
+        double dx = speed * Math.sin(angle * Math.PI / 180);
+        double dy = -speed * Math.cos(angle * Math.PI / 180);
         return new Velocity(dx, dy);
     }
 
@@ -68,6 +68,20 @@ public class Velocity {
      */
     public Point applyToPoint(Point p) {
         return (new Point(p.getX() + this.dx, p.getY() + this.dy));
+    }
+
+    public Point almostApplyToPoint(Point p) {
+        if (this.dx > 0 && this.dy > 0) {
+            return (new Point(p.getX() + this.dx - 1, p.getY() + this.dy - 1));
+        }
+        if (this.dx < 0 && this.dy > 0) {
+            return (new Point(p.getX() + this.dx + 1, p.getY() + this.dy - 1));
+        }
+        if (this.dx > 0 && this.dy < 0) {
+            return (new Point(p.getX() + this.dx - 1, p.getY() + this.dy + 1));
+        } else {
+            return (new Point(p.getX() + this.dx + 1, p.getY() + this.dy + 1));
+        }
     }
 
 

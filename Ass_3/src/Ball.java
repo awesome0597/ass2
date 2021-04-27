@@ -117,15 +117,13 @@ public class Ball implements Sprite {
      */
     public void moveOneStep() {
         CollisionInfo tmp;
-        do {
-            tmp = this.g.getClosestCollision(new Line(this.center, this.getVelocity().applyToPoint(this.center)));
-            if (tmp == null) {
-                this.center = this.getVelocity().applyToPoint(this.center);
-            } else {
-                this.setVelocity(tmp.collisionObject().hit(tmp.collisionPoint(), this.v));
-                this.center = this.getVelocity().applyToPoint(this.center);
-            }
-        } while (tmp != null);
+        tmp = this.g.getClosestCollision(new Line(this.center, this.getVelocity().applyToPoint(this.center)));
+        if (tmp != null) {
+            this.setVelocity(tmp.collisionObject().hit(tmp.collisionPoint(), this.v));
+            return;
+        }
+        this.center = this.getVelocity().applyToPoint(this.center);
+
     }
 
 

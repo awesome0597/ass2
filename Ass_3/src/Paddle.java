@@ -74,12 +74,12 @@ public class Paddle implements Sprite, Collidable {
      * @param d the drawsurface the sprites are drawn on.
      */
     public void drawOn(DrawSurface d) {
-        d.setColor(Color.BLACK);
+        d.setColor(this.rect.getColor());
         d.fillRectangle((int) this.rect.getUpperLeft().getX(), (int) this.rect.getUpperLeft().getY(),
                 (int) this.rect.getWidth(), (int) this.rect.getHeight());
-        d.setColor(this.rect.getColor());
-        d.fillRectangle((int) this.rect.getUpperLeft().getX() + 1, (int) this.rect.getUpperLeft().getY() + 1,
-                (int) this.rect.getWidth() - 2, (int) this.rect.getHeight() - 2);
+        d.setColor(Color.BLACK);
+        d.drawRectangle((int) this.rect.getUpperLeft().getX(), (int) this.rect.getUpperLeft().getY(),
+                (int) this.rect.getWidth(), (int) this.rect.getHeight());
     }
 
     /**
@@ -104,18 +104,21 @@ public class Paddle implements Sprite, Collidable {
         double collisionPointX = collisionPoint.getX();
         double paddlePart = (this.rect.getWidth() / 5 + paddleX);
         double speed = Math.sqrt(Math.pow(currentVelocity.getDx(), 2) + Math.pow(currentVelocity.getDy(), 2));
-        if (collisionPointX <= paddlePart) {
+
+        if (collisionPointX < this.rect.getBottomRight().getX() || collisionPointX > this.rect.getUpperLeft().getX()){
+            return new Velocity((-1) * currentVelocity.getDx(), (-1) * currentVelocity.getDy());
+        } else if (collisionPoint.getY() > this.rect.getUpperLeft().getY()){
+            return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
+        }else if (collisionPointX <= paddlePart) {
             return currentVelocity.fromAngleAndSpeed(300, speed);
         } else if (collisionPointX <= 2 * paddlePart) {
             return currentVelocity.fromAngleAndSpeed(330, speed);
         } else if (collisionPointX <= 3 * paddlePart) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
         } else if (collisionPointX <= 4 * paddlePart) {
-            return currentVelocity.fromAngleAndSpeed(30, speed);
-        } else if (collisionPointX <= 5 * paddlePart) {
-            return currentVelocity.fromAngleAndSpeed(60, speed);
-        } else {
-            return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
+            return currentVelocity.fromAngleAndSpeed(120, speed);
+        } else  {
+            return currentVelocity.fromAngleAndSpeed(150, speed);
         }
 
     }

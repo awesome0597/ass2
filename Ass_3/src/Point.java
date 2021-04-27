@@ -13,6 +13,7 @@ public class Point {
 
     private double x;
     private double y;
+    private double epsilon = 0.000001;
 
     /**
      * constructor.
@@ -69,7 +70,8 @@ public class Point {
      * @return true if identical and false otherwise
      */
     public boolean equals(Point other) {
-        return other != null && (this.getX() == other.getX() && this.getY() == other.getY());
+        return other != null && ((Math.abs(this.getX() - other.getX()) <= epsilon)
+                && (Math.abs(this.getY() - other.getY()) <= epsilon));
     }
 
 }

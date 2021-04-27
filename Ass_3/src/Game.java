@@ -86,22 +86,44 @@ public class Game {
      * adds Obstacle Blocks to game.
      */
     public void addObstacleBlock() {
-        // (new Block(new Rectangle(new Point(300, 300), 400, 50))).addToGame(this);
-        int n = 7;
+        int numOfCollums = 7;
+        int numOfRows = 6;
         Point start = new Point(430, 300);
         double width = 50;
         double height = 20;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < numOfRows; i++) {
             Color random = getRandomColor();
-            for (int j = 0; j < n; j++) {
+            for (int j = 0; j < numOfCollums; j++) {
                 Block block = new Block(new Rectangle(
-                        new Point(start.getX() + (width * j), start.getY()), width, height));
-                block.getCollisionRectangle().setColor(random);
+                        new Point(start.getX() + (width * j), start.getY()), width, height, random));
                 block.addToGame(this);
             }
             start = new Point(start.getX() - width, start.getY() - height);
-            n++;
+            numOfCollums++;
         }
+
+//        int numOfRows = 6;
+//        int numOfBlocks = 7;
+//        int maxNumOfBlocks = 12;
+//        double blockWidth = 50;
+//        double blockHeight = 30;
+//        double nextX = 800 - 20 - blockWidth;
+//        double nextY = 300 - blockHeight;
+//
+//        // Create the pattern blocks and add them to game
+//        for (int i = 0; i < numOfRows; i++) {
+//            Color newColor = getRandomColor();
+//            for (int j = 0; (j < numOfBlocks) && (numOfBlocks <= maxNumOfBlocks); j++) {
+//                Rectangle newRect = new Rectangle(new Point(nextX, nextY), blockWidth, blockHeight);
+//                newRect.setColor(newColor);
+//                Block newBlock = new Block(newRect);
+//                newBlock.addToGame(this);
+//                nextX = nextX - blockWidth;
+//            }
+//            nextY = nextY - blockHeight;
+//            numOfBlocks++;
+//            nextX = 800 - 20 - blockWidth;
+//        }
         addBorderBlock();
     }
 
@@ -115,12 +137,11 @@ public class Game {
         Point three = new Point(780, 20);
         Point four = new Point(0, 20);
         List<Block> blockList = new ArrayList<>();
-        blockList.add(new Block(new Rectangle(one, 800, 20)));
-        blockList.add(new Block(new Rectangle(two, 760, 20)));
-        blockList.add(new Block(new Rectangle(four, 20, 580)));
-        blockList.add(new Block(new Rectangle(three, 20, 580)));
+        blockList.add(new Block(new Rectangle(one, 800, 20, Color.GRAY)));
+        blockList.add(new Block(new Rectangle(two, 760, 20, Color.GRAY)));
+        blockList.add(new Block(new Rectangle(four, 20, 580, Color.GRAY)));
+        blockList.add(new Block(new Rectangle(three, 20, 580, Color.GRAY)));
         for (Block x : blockList) {
-            x.getCollisionRectangle().setColor(Color.GRAY);
             x.addToGame(this);
         }
     }
@@ -131,8 +152,9 @@ public class Game {
      * and add them to the game.
      */
     public void initialize() {
-        Ball ball = new Ball(new Point(418, 296), 5, Color.MAGENTA);
-        ball.setVelocity(4, -4);
+        Ball ball = new Ball(new Point(400, 100), 5, Color.MAGENTA);
+        Velocity v = Velocity.fromAngleAndSpeed(80,3);
+        ball.setVelocity(v);
         ball.addToGame(this);
         addObstacleBlock();
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);

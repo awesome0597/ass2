@@ -37,6 +37,13 @@ public class Rectangle {
         this.height = height;
     }
 
+    public Rectangle(Point upperLeft, double width, double height, Color color) {
+        this.upperLeft = upperLeft;
+        this.width = width;
+        this.height = height;
+        this.color = color;
+    }
+
 
     /**
      * constructor.
