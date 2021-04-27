@@ -14,6 +14,7 @@
 public class Line {
     private Point start;
     private Point end;
+    private double epsilon = 0.00001;
 
 
     /**
@@ -90,66 +91,79 @@ public class Line {
                 || (this.start == other.end && this.end == other.start));
     }
 
-    /**
-     * related to 'intersectionWith' method. Checks case that one line is point and other is a line.
-     *
-     * @param one type Line
-     * @param two type Line
-     * @return value of point if intersect and null otherwise
-     */
-    private Point pointLineRelation(Line one, Line two) {
-        double m;
-        double n;
-        double y;
-        if (one.start.equals(one.end) && !two.start.equals(two.end)) { //if first line is point
-            if (two.start.getX() - two.end.getX() == 0) { // line is parallel to x axis
-                if ((one.start.getX() == two.start.getX())
-                        && (((one.start.getY() <= two.start.getY())
-                        && one.start.getY() >= two.end.getY())
-                        || ((one.start.getY() >= two.start.getY())
-                        && one.start.getY() <= two.end.getY()))) {
-                    return new Point(one.start.getX(), one.start.getY());
-                }
-                return null;
-            } else {
-                m = (two.start.getY() - two.end.getY()) / (two.start.getX() - two.end.getX());
-                n = two.start.getY() - (m * two.start.getX());
-            }
-            y = m * one.start.getX() + n;
-            if (y == one.start.getY()) {
-                return new Point(one.start.getX(), one.start.getY());
-            }
 
-            return null;
-
-        }
-        return null;
+    private boolean isYInRange(Line one, double y) {
+        return ((y >= one.start.getY()) && (y <= one.end.getY()))
+                || ((y <= one.start.getY()) && (y >= one.end.getY()));
     }
 
-    /**
-     * related to 'intersectionWith' method. Checks case if both lines are points.
-     *
-     * @param one type Line
-     * @param two type Line
-     * @return value of point if intersect and null otherwise
-     */
-    private Point bothLinesArePoints(Line one, Line two) {
-        if (one.start.equals(one.end) && two.start.equals(two.end)) { //if both lines are points
-            if (one.start.equals(two.start)) {
-                return new Point(one.start.getX(), two.start.getY());
-            }
-            return null;
-        }
-        return null;
+    private boolean isXInRange(Line one, double x) {
+        return ((x >= one.start.getX())
+                && (x <= one.end.getX()))
+                || ((x <= one.start.getX())
+                && (x >= one.end.getX()));
     }
 
-    /**
-     * related to 'intersectionWith' method. Checks if y value of one line is contained in the other.
-     *
-     * @param one type Line
-     * @param two type Line
-     * @return true if conditions met false otherwise
-     */
+    private boolean isParallelX(Line line) {
+        return Math.abs(line.start.getY() - line.end.getY()) <= epsilon;
+    }
+
+    private boolean isParallelY(Line line) {
+        return Math.abs(line.start.getX() - line.end.getX()) <= epsilon;
+    }
+
+    private double getSlope(Line line) {
+        return (line.start.getY() - line.end.getY()) / (line.start.getX() - line.end.getX());
+    }
+
+    private double getB(Line line, double a) {
+        return line.start.getY() - (a * line.start.getX());
+    }
+
+    private Point oneOfLinesIsParallel(Line other) {
+        if (isParallelY(this)) {
+            return oneLineParallelY(this, other);
+        } else if (isParallelY(other)) {
+            return oneLineParallelY(other, this);
+        } else if (isParallelX(this)) {
+            return oneLineParallelX(this, other);
+        } else {
+            return oneLineParallelX(other, this);
+        }
+    }
+
+    private Point oneLineParallelX(Line one, Line two) {
+        double a = getSlope(two);
+        double b = two.start.getY() - (a * two.start.getX());
+        double x = (one.start.getY() - b) / a;
+        return new Point(x, one.start.getY());
+    }
+
+    private Point oneLineParallelY(Line one, Line two) {
+        double a = getSlope(two);
+        double b = two.start.getY() - (a * two.start.getX());
+        double y = a * one.start.getX() + b;
+        return new Point(one.start.getX(), y);
+    }
+
+    private Point bothLinesAreParallel(Line other) {
+        if (isParallelX(this) && isParallelY(other)) {
+            return new Point(other.start.getX(), this.start.getY());
+        } else {
+            return new Point(this.start.getX(), other.start.getY());
+        }
+    }
+
+    private Point findCommonPoint(Line other) {
+        if ((this.start.equals(other.start)) || (this.start.equals(other.end))) {
+            return new Point(this.start.getX(), this.start.getY());
+        } else if ((this.end.equals(other.start)) || (this.end.equals(other.end))) {
+            return new Point(this.end.getX(), this.end.getY());
+        }
+        return null;
+
+    }
+
     private boolean isLineContainedY(Line one, Line two) {
         if (((one.start.getY() > two.start.getY()) && (one.start.getY() < two.end.getY()))
                 || ((one.start.getY() < two.start.getY()) && (one.start.getY() > two.end.getY()))) {
@@ -161,13 +175,6 @@ public class Line {
         return false;
     }
 
-    /**
-     * related to 'intersectionWith' method. Checks if x value of one line is contained in the other.
-     *
-     * @param one type Line
-     * @param two type Line
-     * @return true if conditions met false otherwise
-     */
     private boolean isLineContainedX(Line one, Line two) {
         if (((one.start.getX() > two.start.getX()) && (one.start.getX() < two.end.getX()))
                 || ((one.start.getX() < two.start.getX()) && (one.start.getX() > two.end.getX()))) {
@@ -179,157 +186,287 @@ public class Line {
         return false;
     }
 
-    /**
-     * related to 'intersectionWith' method. Checks if both lines are the same.
-     *
-     * @param other type line
-     * @return value of point if intersect and null otherwise
-     */
-    private Point areEndsSame(Line other) {
-        if ((this.start.equals(other.start)) || (this.start.equals(other.end))) {
-            return new Point(this.start.getX(), this.start.getY());
-        } else if ((this.end.equals(other.start)) || (this.end.equals(other.end))) {
-            return new Point(this.end.getX(), this.end.getY());
-        }
-        return null;
+//    private boolean areEquationsSame(double a1, double a2, double b1, double b2) {
+//        return new Point(a1, b1).equals(new Point(a2, b2));
+//    }
 
-    }
-
-    /**
-     * related to 'intersectionWith' method. Checks if y is in range.
-     *
-     * @param one type line
-     * @param y   double from line equation
-     * @return true if conditions met false otherwise
-     */
-    private boolean isYInRange(Line one, double y) {
-        return ((y >= one.start.getY()) && (y <= one.end.getY()))
-                || ((y <= one.start.getY()) && (y >= one.end.getY()));
-    }
-
-    /**
-     * related to 'intersectionWith' method. Checks if x is in range.
-     *
-     * @param one type line
-     * @param x   value of start of other line
-     * @return true if conditions met false otherwise
-     */
-    private boolean isXInRange(Line one, double x) {
-        return !((x >= one.start.getX())
-                && (x <= one.end.getX()))
-                || ((x <= one.start.getX())
-                && (x >= one.end.getX()));
-    }
-
-    /**
-     * Returns true if the lines intersect, false otherwise.
-     *
-     * @param other type Line
-     * @return boolean
-     */
     public boolean isIntersecting(Line other) {
         return (intersectionWith(other) != null);
     }
 
-    /**
-     * finds if their is intersection point between two lines.
-     *
-     * @param other type Line
-     * @return Returns the intersection point if the lines intersect, and null otherwise.
-     */
     public Point intersectionWith(Line other) {
-        double m1;
-        double m2;
-        double x;
-        double y;
-        double n1;
-        double n2;
-
-        if (pointLineRelation(this, other) != null) {
-            return new Point(this.start.getX(), this.start.getY());
-        }
-        if (pointLineRelation(other, this) != null) {
-            return new Point(other.start.getX(), other.start.getY());
-        }
-        if (bothLinesArePoints(this, other) != null) {
-            return new Point(this.start.getX(), this.start.getY());
-        } else if ((this.start.getX() == this.end.getX())
-                && (other.start.getX() == other.end.getX())) { //both lines are parallel to y axis
-            if (this.length() < other.length()) {
-                if (isLineContainedY(this, other)) {
-                    return null;
-                }
-            } else if (this.length() > other.length()) {
-                if (isLineContainedY(other, this)) {
-                    return null;
-                }
-            } else if (areEndsSame(other) != null) {
-                return areEndsSame(other);
-            }
+        if (((isXInRange(this, other.start.getX()) || isXInRange(this, other.end.getX()))
+                && (isYInRange(this, other.start.getY()) || isYInRange(this, other.end.getY())))) {
             return null;
-        } else if ((this.start.getY() == this.end.getY())
-                && (other.start.getY() == other.end.getY())) { //both lines are parallel to x axis
-            if (isLineContainedX(this, other)) {
+        }
+        if (isParallelX(this) && isParallelX(other) || isParallelY(this) && isParallelY(other)) {
+            if (isLineContainedY(this, other) || isLineContainedX(this, other)) {
                 return null;
             }
-            if (areEndsSame(other) != null) {
-                return areEndsSame(other);
-            }
+            return findCommonPoint(other);
+        }
+        if (isParallelX(this) && isParallelY(other) || isParallelX(other) && isParallelY(this)) {
+            return bothLinesAreParallel(other);
         }
 
-        if (this.start.getX() - this.end.getX() == 0) {
-            x = this.start.getX();
-            if (isXInRange(other, this.start.getX())) {
-                return null;
-            }
-            m2 = (other.start.getY() - other.end.getY()) / (other.start.getX() - other.end.getX());
-            n2 = other.start.getY() - (m2 * other.start.getX());
-            y = m2 * x + n2;
-            if (isYInRange(this, y)) {
-                return new Point(x, y);
-            }
-            return null;
-
-        } else {
-            m1 = (this.start.getY() - this.end.getY()) / (this.start.getX() - this.end.getX());
-            n1 = this.start.getY() - (m1 * this.start.getX());
+        if (isParallelY(this) || isParallelY(other) || isParallelX(this) || isParallelX(other)) {
+            return oneOfLinesIsParallel(other);
         }
-        if (other.start.getX() - other.end.getX() == 0) {
-            x = other.start.getX();
-            if (isXInRange(this, x)) {
-                return null;
-            }
-            m1 = (this.start.getY() - this.end.getY()) / (this.start.getX() - this.end.getX());
-            n1 = this.start.getY() - (m1 * this.start.getX());
-            y = m1 * x + n1;
-            if (isYInRange(other, y)) {
-                return new Point(x, y);
-            }
-            return null;
 
-
-        } else {
-            m2 = (other.start.getY() - other.end.getY()) / (other.start.getX() - other.end.getX());
-            n2 = other.start.getY() - (m2 * other.start.getX());
-        }
-        if ((m2 == m1) && (n1 == n2)) {
+        double a1 = getSlope(this);
+        double a2 = getSlope(other);
+        double b1 = getB(this, a1);
+        double b2 = getB(other, a2);
+        if (Math.abs(a1 - a2) <= epsilon) {
             return null;
         }
-
-        if (m2 != m1) {
-            x = ((n2 - n1) / (m1 - m2));
-        } else {
-            return null;
-        }
-        if (((x >= this.start.getX() && x <= this.end.getX())
-                || (x >= this.end.getX() && x <= this.start.getX()))
-                && ((x >= other.start.getX() && x <= other.end.getX())
-                || (x >= other.end.getX() && x <= other.start.getX()))) {
-            y = m1 * x + n1;
-            return new Point(x, y);
+        double x = ((b2 - b1) / (a1 - a2));
+        if (isXInRange(this, x) && isXInRange(other, x)) {
+            return new Point(x, a1 * x + b1);
         }
         return null;
-
     }
+
+//    /**
+//     * related to 'intersectionWith' method. Checks case that one line is point and other is a line.
+//     *
+//     * @param one type Line
+//     * @param two type Line
+//     * @return value of point if intersect and null otherwise
+//     */
+//    private Point pointLineRelation(Line one, Line two) {
+//        double m;
+//        double n;
+//        double y;
+//        if (one.start.equals(one.end) && !two.start.equals(two.end)) { //if first line is point
+//            if (two.start.getX() - two.end.getX() == 0) { // line is parallel to x axis
+//                if ((one.start.getX() == two.start.getX())
+//                        && (((one.start.getY() <= two.start.getY())
+//                        && one.start.getY() >= two.end.getY())
+//                        || ((one.start.getY() >= two.start.getY())
+//                        && one.start.getY() <= two.end.getY()))) {
+//                    return new Point(one.start.getX(), one.start.getY());
+//                }
+//                return null;
+//            } else {
+//                m = (two.start.getY() - two.end.getY()) / (two.start.getX() - two.end.getX());
+//                n = two.start.getY() - (m * two.start.getX());
+//            }
+//            y = m * one.start.getX() + n;
+//            if (y == one.start.getY()) {
+//                return new Point(one.start.getX(), one.start.getY());
+//            }
+//
+//            return null;
+//
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * related to 'intersectionWith' method. Checks case if both lines are points.
+//     *
+//     * @param one type Line
+//     * @param two type Line
+//     * @return value of point if intersect and null otherwise
+//     */
+//    private Point bothLinesArePoints(Line one, Line two) {
+//        if (one.start.equals(one.end) && two.start.equals(two.end)) { //if both lines are points
+//            if (one.start.equals(two.start)) {
+//                return new Point(one.start.getX(), two.start.getY());
+//            }
+//            return null;
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * related to 'intersectionWith' method. Checks if y value of one line is contained in the other.
+//     *
+//     * @param one type Line
+//     * @param two type Line
+//     * @return true if conditions met false otherwise
+//     */
+//    private boolean isLineContainedY(Line one, Line two) {
+//        if (((one.start.getY() > two.start.getY()) && (one.start.getY() < two.end.getY()))
+//                || ((one.start.getY() < two.start.getY()) && (one.start.getY() > two.end.getY()))) {
+//            return true;
+//        } else if (((one.end.getY() > two.start.getY()) && (one.end.getY() < two.end.getY()))
+//                || ((one.end.getY() < two.start.getY()) && (one.end.getY() > two.end.getY()))) {
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    /**
+//     * related to 'intersectionWith' method. Checks if x value of one line is contained in the other.
+//     *
+//     * @param one type Line
+//     * @param two type Line
+//     * @return true if conditions met false otherwise
+//     */
+//    private boolean isLineContainedX(Line one, Line two) {
+//        if (((one.start.getX() > two.start.getX()) && (one.start.getX() < two.end.getX()))
+//                || ((one.start.getX() < two.start.getX()) && (one.start.getX() > two.end.getX()))) {
+//            return true;
+//        } else if (((one.end.getX() > two.start.getX()) && (one.end.getX() < two.end.getX()))
+//                || ((one.end.getX() < two.start.getX()) && (one.end.getX() > two.end.getX()))) {
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    /**
+//     * related to 'intersectionWith' method. Checks if both lines are the same.
+//     *
+//     * @param other type line
+//     * @return value of point if intersect and null otherwise
+//     */
+//    private Point areEndsSame(Line other) {
+//        if ((this.start.equals(other.start)) || (this.start.equals(other.end))) {
+//            return new Point(this.start.getX(), this.start.getY());
+//        } else if ((this.end.equals(other.start)) || (this.end.equals(other.end))) {
+//            return new Point(this.end.getX(), this.end.getY());
+//        }
+//        return null;
+//
+//    }
+//
+//    /**
+//     * related to 'intersectionWith' method. Checks if y is in range.
+//     *
+//     * @param one type line
+//     * @param y   double from line equation
+//     * @return true if conditions met false otherwise
+//     */
+//    private boolean isYInRange(Line one, double y) {
+//        return ((y >= one.start.getY()) && (y <= one.end.getY()))
+//                || ((y <= one.start.getY()) && (y >= one.end.getY()));
+//    }
+//
+//    /**
+//     * related to 'intersectionWith' method. Checks if x is in range.
+//     *
+//     * @param one type line
+//     * @param x   value of start of other line
+//     * @return true if conditions met false otherwise
+//     */
+//    private boolean isXInRange(Line one, double x) {
+//        return !((x >= one.start.getX())
+//                && (x <= one.end.getX()))
+//                || ((x <= one.start.getX())
+//                && (x >= one.end.getX()));
+//    }
+//
+//    /**
+//     * Returns true if the lines intersect, false otherwise.
+//     *
+//     * @param other type Line
+//     * @return boolean
+//     */
+//    public boolean isIntersecting(Line other) {
+//        return (intersectionWith(other) != null);
+//    }
+//
+//    /**
+//     * finds if their is intersection point between two lines.
+//     *
+//     * @param other type Line
+//     * @return Returns the intersection point if the lines intersect, and null otherwise.
+//     */
+//    public Point intersectionWith(Line other) {
+//        double m1;
+//        double m2;
+//        double x;
+//        double y;
+//        double n1;
+//        double n2;
+//
+//        if (pointLineRelation(this, other) != null) {
+//            return new Point(this.start.getX(), this.start.getY());
+//        }
+//        if (pointLineRelation(other, this) != null) {
+//            return new Point(other.start.getX(), other.start.getY());
+//        }
+//        if (bothLinesArePoints(this, other) != null) {
+//            return new Point(this.start.getX(), this.start.getY());
+//        } else if ((this.start.getX() == this.end.getX())
+//                && (other.start.getX() == other.end.getX())) { //both lines are parallel to y axis
+//            if (this.length() < other.length()) {
+//                if (isLineContainedY(this, other)) {
+//                    return null;
+//                }
+//            } else if (this.length() > other.length()) {
+//                if (isLineContainedY(other, this)) {
+//                    return null;
+//                }
+//            } else if (areEndsSame(other) != null) {
+//                return areEndsSame(other);
+//            }
+//            return null;
+//        } else if ((this.start.getY() == this.end.getY())
+//                && (other.start.getY() == other.end.getY())) { //both lines are parallel to x axis
+//            if (isLineContainedX(this, other)) {
+//                return null;
+//            }
+//            if (areEndsSame(other) != null) {
+//                return areEndsSame(other);
+//            }
+//        }
+//
+//        if (this.start.getX() - this.end.getX() == 0) {
+//            x = this.start.getX();
+//            if (isXInRange(other, this.start.getX())) {
+//                return null;
+//            }
+//            m2 = (other.start.getY() - other.end.getY()) / (other.start.getX() - other.end.getX());
+//            n2 = other.start.getY() - (m2 * other.start.getX());
+//            y = m2 * x + n2;
+//            if (isYInRange(this, y)) {
+//                return new Point(x, y);
+//            }
+//            return null;
+//
+//        } else {
+//            m1 = (this.start.getY() - this.end.getY()) / (this.start.getX() - this.end.getX());
+//            n1 = this.start.getY() - (m1 * this.start.getX());
+//        }
+//        if (other.start.getX() - other.end.getX() == 0) {
+//            x = other.start.getX();
+//            if (isXInRange(this, x)) {
+//                return null;
+//            }
+//            m1 = (this.start.getY() - this.end.getY()) / (this.start.getX() - this.end.getX());
+//            n1 = this.start.getY() - (m1 * this.start.getX());
+//            y = m1 * x + n1;
+//            if (isYInRange(other, y)) {
+//                return new Point(x, y);
+//            }
+//            return null;
+//
+//
+//        } else {
+//            m2 = (other.start.getY() - other.end.getY()) / (other.start.getX() - other.end.getX());
+//            n2 = other.start.getY() - (m2 * other.start.getX());
+//        }
+//        if ((m2 == m1) && (n1 == n2)) {
+//            return null;
+//        }
+//
+//        if (m2 != m1) {
+//            x = ((n2 - n1) / (m1 - m2));
+//        } else {
+//            return null;
+//        }
+//        if (((x >= this.start.getX() && x <= this.end.getX())
+//                || (x >= this.end.getX() && x <= this.start.getX()))
+//                && ((x >= other.start.getX() && x <= other.end.getX())
+//                || (x >= other.end.getX() && x <= other.start.getX()))) {
+//            y = m1 * x + n1;
+//            return new Point(x, y);
+//        }
+//        return null;
+//
+//    }
 
 }

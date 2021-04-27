@@ -1,6 +1,6 @@
 import biuoop.DrawSurface;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * name: Adira Weiss.
@@ -58,6 +58,11 @@ public class Ball implements Sprite {
 
     }
 
+    /**
+     * adds game enviroment to ball.
+     *
+     * @param g type GameEnvironment.
+     */
     public void setGameEnviroment(GameEnvironment g) {
         this.g = g;
     }
@@ -111,43 +116,18 @@ public class Ball implements Sprite {
      * Called from drawAnimation. This function moves the ball forward one step according to its given velocity.
      */
     public void moveOneStep() {
-     CollisionInfo tmp;
-       do {
-           tmp = this.g.getClosestCollision(new Line(this.center, this.getVelocity().applyToPoint(this.center)));
-           if (tmp == null) {
-               this.center = this.getVelocity().applyToPoint(this.center);
-           } else {
-               this.setVelocity(tmp.collisionObject().hit(tmp.collisionPoint(), this.v));
-               this.center = this.getVelocity().applyToPoint(this.center);
-           }
-       } while (tmp != null);
+        CollisionInfo tmp;
+        do {
+            tmp = this.g.getClosestCollision(new Line(this.center, this.getVelocity().applyToPoint(this.center)));
+            if (tmp == null) {
+                this.center = this.getVelocity().applyToPoint(this.center);
+            } else {
+                this.setVelocity(tmp.collisionObject().hit(tmp.collisionPoint(), this.v));
+                this.center = this.getVelocity().applyToPoint(this.center);
+            }
+        } while (tmp != null);
     }
 
-    /**
-     * Called from drawAnimation. This function checks if the velocity of the ball would need to change before
-     * moveOneStep. A temporary ball, tmp, is created and moveOneStep is then applied to its center. We then have two if
-     * statements, one checking the y axis and one checking the x axis. We check that after moving the center if the
-     * edge of the ball adjacent to that axis does not leave the frame. For example, to check if we intersect with the
-     * y axis we see if the value of "x - r <= min", or if "x + r >= max". If the statement is true we times the value
-     * of dy * (-1) (and similarly for the x axis).
-     *
-     * @param one type Frame, sent so we have the borders of the window.
-     */
-//    public void changeVelocity(Frame one) {
-//        Ball tmp = this;
-//        tmp.moveOneStep();
-//        //check for x axis
-//        if (tmp.getY() - tmp.getSize() <= one.getMin().getY()
-//                || tmp.getY() + tmp.getSize() >= one.getMax().getY()) {
-//            this.setVelocity(this.v.getDx(), (-1) * this.v.getDy());
-//        }
-//        //check for y axis
-//        if (tmp.getX() - tmp.getSize() <= one.getMin().getX()
-//                || tmp.getX() + tmp.getSize() >= one.getMax().getX()) {
-//            this.setVelocity((-1) * this.v.getDx(), this.v.getDy());
-//        }
-//
-//    }
 
     /**
      * Draw the ball on the given DrawSurface.
@@ -160,16 +140,24 @@ public class Ball implements Sprite {
         surface.fillCircle((int) this.center.getX(), (int) this.center.getY(), this.getSize());
         //draw shape with 1 width border
         surface.setColor(this.getColor());
-        surface.fillCircle((int) this.center.getX(), (int) this.center.getY(), this.getSize()-1);
+        surface.fillCircle((int) this.center.getX(), (int) this.center.getY(), this.getSize() - 1);
     }
 
+    /**
+     * notify sprite that time has passed. Invokes move one step.
+     */
     public void timePassed() {
         moveOneStep();
     }
 
-    public void addToGame(Game game){
-       game.addSprite(this);
-       this.setGameEnviroment(game.getEnvironment());
+    /**
+     * adds Sprite to Game.
+     *
+     * @param game type Game.
+     */
+    public void addToGame(Game game) {
+        game.addSprite(this);
+        this.setGameEnviroment(game.getEnvironment());
 
     }
 }

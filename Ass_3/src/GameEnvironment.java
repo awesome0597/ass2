@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * name: Adira Weiss.
  * id: 322094111
@@ -10,16 +13,13 @@
  * collision.
  **/
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class GameEnvironment {
     private List<Collidable> listOfCollidables;
 
     /**
-     *constructor.
-     *creates a new empty list of collidable objects.
+     * constructor.
+     * creates a new empty list of collidable objects.
      */
     public GameEnvironment() {
         this.listOfCollidables = new ArrayList<Collidable>();
@@ -45,14 +45,13 @@ public class GameEnvironment {
 
 
     /**
-     *
      * Assume an object moving from line.start() to line.end().
      * If this object will not collide with any of the collidables
      * in this collection, returns null. Else, return the information
      * about the closest collision that is going to occur.
      *
-     * @param trajectory
-     * @return
+     * @param trajectory type Line
+     * @return type Collision Info
      */
     public CollisionInfo getClosestCollision(Line trajectory) {
         Point collisionPoint = trajectory.end();

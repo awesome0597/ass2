@@ -17,7 +17,7 @@ import java.util.List;
 public class Line {
     private Point start;
     private Point end;
-
+    private double epsilon = 0.0001;
 
     /**
      * constructor.
@@ -120,7 +120,6 @@ public class Line {
                     dis = tmp;
                     index = i;
                 }
-                ;
             }
             return a.get(index);
         }

@@ -1,6 +1,6 @@
 import biuoop.DrawSurface;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * name: Adira Weiss.
@@ -47,7 +47,6 @@ public class Block implements Collidable, Sprite {
     }
 
     /**
-     *
      * checks if Y value of collisionPoint equals any of the Y values of the block.
      *
      * @param collisionPoint type Point
@@ -94,11 +93,18 @@ public class Block implements Collidable, Sprite {
                 (int) this.rect.getWidth() - 2, (int) this.rect.getHeight() - 2);
     }
 
-    // notify the sprite that time has passed
+    /**
+     * notify the sprite that time has passed.
+     */
     public void timePassed() {
         return;
     }
 
+    /**
+     * adds type to list of sprites anf collidables.
+     *
+     * @param g type Game
+     */
     public void addToGame(Game g) {
         g.addCollidable(this);
         g.addSprite(this);

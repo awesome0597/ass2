@@ -1,22 +1,78 @@
 import biuoop.DrawSurface;
+import biuoop.GUI;
+import biuoop.KeyboardSensor;
 
-import java.awt.*;
+import java.awt.Color;
+
+
+/**
+ * name: Adira Weiss.
+ * id: 322094111
+ * version 2.0.1
+ * date: 23/4/21
+ *
+ * <p>
+ *     this class creates a paddle
+ **/
+
 
 public class Paddle implements Sprite, Collidable {
     private biuoop.KeyboardSensor keyboard;
     private Rectangle rect;
 
-    public Paddle(Rectangle rect) {
+    /**
+     * constructor.
+     *
+     * @param rect type Rectangle
+     * @param gui  type GUI
+     */
+    public Paddle(Rectangle rect, GUI gui) {
         this.rect = rect;
-    }
-//    public void moveLeft();
-//    public void moveRight();
+        this.keyboard = gui.getKeyboardSensor();
 
-    // Sprite
+    }
+
+    /**
+     * Changes the upper left corner of rectangle to make it look like the paddle is moving left.
+     */
+    public void moveLeft() {
+        if (this.rect.getUpperLeft().getX() - 5 > 20) {
+            this.rect.setUpperLeft(new Point(this.rect.getUpperLeft().getX() - 5, this.rect.getUpperLeft().getY()));
+        } else {
+            this.rect.setUpperLeft(new Point(20, this.rect.getUpperLeft().getY()));
+        }
+
+
+    }
+
+    /**
+     * Changes the upper left corner of rectangle to make it look like the paddle is moving right.
+     */
+    public void moveRight() {
+        if (this.rect.getUpperRight().getX() + 5 < 780) {
+            this.rect.setUpperLeft(new Point(this.rect.getUpperLeft().getX() + 5, this.rect.getUpperLeft().getY()));
+        } else {
+            this.rect.setUpperLeft(new Point(780 - this.rect.getWidth(), this.rect.getUpperLeft().getY()));
+        }
+
+    }
+
+    /**
+     * this method notifies the paddle that time has passed.
+     */
     public void timePassed() {
-        return;
+        if (this.keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
+            moveLeft();
+        } else if (this.keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
+            moveRight();
+        }
     }
 
+    /**
+     * this method draws the paddle on the drawsurface.
+     *
+     * @param d the drawsurface the sprites are drawn on.
+     */
     public void drawOn(DrawSurface d) {
         d.setColor(Color.BLACK);
         d.fillRectangle((int) this.rect.getUpperLeft().getX(), (int) this.rect.getUpperLeft().getY(),
@@ -26,48 +82,51 @@ public class Paddle implements Sprite, Collidable {
                 (int) this.rect.getWidth() - 2, (int) this.rect.getHeight() - 2);
     }
 
-    // Collidable
+    /**
+     * returns the object of paddle.
+     *
+     * @return type Rectangle.
+     */
     public Rectangle getCollisionRectangle() {
         return this.rect;
     }
 
-    private boolean checkRegion(double x, double region, double size) {
-        return x >= this.rect.getUpperLeft().getX() + size * (region - 1)
-                && (x < this.rect.getUpperLeft().getX() + size * region);
-    }
-
+    /**
+     * changes the velocity of the ball based on the area of the paddle that is hit.
+     *
+     * @param collisionPoint  point of collision with the paddle
+     * @param currentVelocity current velocity of the moving ball
+     * @return type Velocity
+     */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        double size = this.rect.getWidth() / 5;
-        if (checkRegion(collisionPoint.getX(), 1, size)) {
-            Velocity v = currentVelocity.fromDxDy();
-            return v.fromAngleAndSpeed(v.getDx() - 60, v.getDy());
-        } else if (checkRegion(collisionPoint.getX(), 2, size)) {
-            Velocity v = currentVelocity.fromDxDy();
-            return v.fromAngleAndSpeed(v.getDx() - 30, v.getDy());
-        } else if (checkRegion(collisionPoint.getX(), 3, size)) {
-            return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
-        } else if (checkRegion(collisionPoint.getX(), 4, size)) {
-            Velocity v = currentVelocity.fromDxDy();
-            return v.fromAngleAndSpeed(v.getDx() + 30, v.getDy());
-        } else if (checkRegion(collisionPoint.getX(), 5, size + 1)) {
-            Velocity v = currentVelocity.fromDxDy();
-            return v.fromAngleAndSpeed(v.getDx() + 60, v.getDy());
+
+        double paddleX = this.rect.getUpperLeft().getX();
+        double collisionPointX = collisionPoint.getX();
+        double paddlePart = (this.rect.getWidth() / 5 + paddleX);
+        double speed = Math.sqrt(Math.pow(currentVelocity.getDx(), 2) + Math.pow(currentVelocity.getDy(), 2));
+        if (collisionPointX <= paddlePart) {
+            return currentVelocity.fromAngleAndSpeed(300, speed);
+        } else if (collisionPointX <= 2 * paddlePart) {
+            return currentVelocity.fromAngleAndSpeed(330, speed);
+        } else if (collisionPointX <= 3 * paddlePart) {
+            return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
+        } else if (collisionPointX <= 4 * paddlePart) {
+            return currentVelocity.fromAngleAndSpeed(30, speed);
+        } else if (collisionPointX <= 5 * paddlePart) {
+            return currentVelocity.fromAngleAndSpeed(60, speed);
         } else {
-            return currentVelocity;
+            return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
         }
 
-//       if (collisionPoint.getX() == this.rect.getUpperLeft().getX()
-//                || collisionPoint.getX() == this.rect.getBottomRight().getX()) {
-//            return new Velocity((-1) * currentVelocity.getDx(), currentVelocity.getDy());
-//        } else if (collisionPoint.getY() == this.rect.getUpperLeft().getY()
-//                || collisionPoint.getY() == this.rect.getBottomRight().getY()) {
-//            return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
-//        } else {
-//            return currentVelocity;
-//        }
     }
 
     // Add this paddle to the game.
+
+    /**
+     * Add this paddle to the game.
+     *
+     * @param g type Game
+     */
     public void addToGame(Game g) {
         g.addCollidable(this);
         g.addSprite(this);

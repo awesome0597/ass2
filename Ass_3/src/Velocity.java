@@ -47,24 +47,15 @@ public class Velocity {
 
     /**
      * This function receives two variables, angle and speed, and converts them to delta x and delta y.
-     * the reason the cosine corresponds to dx and sinus to dy is because the java GUI mirrors the first quarter of the
-     * Cartesian coordinate system. To make up for that, and to have window operate as the first quarter of the
-     * coordinate system we flip both sin and cos and subtract 90 from the angle.
      *
      * @param angle type double, the angle of the vector representing the velocity
      * @param speed type double, the length of the vector representing the velocity
      * @return type Velocity, returns the conversion of angle and speed to dx, dy
      */
     public Velocity fromAngleAndSpeed(double angle, double speed) {
-        double dx = (speed * Math.cos(Math.toRadians(angle - 90)));
-        double dy = (speed * Math.sin(Math.toRadians(angle - 90)));
+        double dx = (speed * Math.sin(angle * Math.PI / 180));
+        double dy = (-speed * Math.cos(angle * Math.PI / 180));
         return new Velocity(dx, dy);
-    }
-
-    public Velocity fromDxDy() {
-        double speed = new Point(this.dx, this.dy).distance(new Point(2 * this.dx, 2 * this.dy));
-        double angle = Math.toDegrees(Math.acos(Math.toRadians(this.dx / speed))) - 90;
-        return new Velocity(angle, speed);
     }
 
 
