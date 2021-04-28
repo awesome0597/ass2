@@ -61,10 +61,10 @@ public class Ball implements Sprite {
     /**
      * adds game enviroment to ball.
      *
-     * @param gameEnviroment type GameEnvironment.
+     * @param gameEnvironment type GameEnvironment.
      */
-    public void setGameEnviroment(GameEnvironment gameEnviroment) {
-        this.g = gameEnviroment;
+    public void setGameEnvironment(GameEnvironment gameEnvironment) {
+        this.g = gameEnvironment;
     }
 
     /**
@@ -113,29 +113,80 @@ public class Ball implements Sprite {
     }
 
     /**
+     * method that checks if collision point is one of the corners of the collidable object.
+     *
+     * @param collision type Collision Info
+     * @return type Point
+     */
+    public boolean collisionPointIsCorner(CollisionInfo collision) {
+        Rectangle rect = collision.collisionObject().getCollisionRectangle();
+        return collision.collisionPoint().equals(rect.getUpperRight())
+                || collision.collisionPoint().equals(rect.getBottomRight())
+                || collision.collisionPoint().equals(rect.getUpperLeft())
+                || collision.collisionPoint().equals(rect.getBottomLeft());
+    }
+
+    /**
+     * Method that finds the closer corner to the collision point.
+     * @param collision type Collision Info
+     * @return type Point
+     */
+    public Point findCloserCorner(CollisionInfo collision) {
+        Rectangle rect = collision.collisionObject().getCollisionRectangle();
+        if (rect.getBottomRight().distance(collision.collisionPoint())
+                < rect.getBottomRight().distance(collision.collisionPoint())) {
+            return rect.getBottomRight();
+        } else {
+            return rect.getBottomLeft();
+        }
+    }
+
+    /**
      * Called from drawAnimation. This function moves the ball forward one step according to its given velocity.
      */
     public void moveOneStep() {
-        CollisionInfo maybeCollision = this.g.getClosestCollision
-                (new Line(this.center, this.getVelocity().applyToPoint(this.center)));
+        CollisionInfo maybeCollision = this.g.getClosestCollision(
+                new Line(this.center, this.getVelocity().applyToPoint(this.center)));
         if (maybeCollision != null) {
             this.setVelocity(maybeCollision.collisionObject().hit(maybeCollision.collisionPoint(), this.v));
-            if (maybeCollision.collisionPoint().equals(this.center)){
-                this.center = this.getVelocity().applyToPoint(this.center);
-            } else  {
-                maybeCollision = this.g.getClosestCollision
-                        (new Line(this.center, this.getVelocity().applyToPoint(this.center)));
-                if (maybeCollision != null){
+            if (maybeCollision.collisionPoint().equals(this.center)) {
+                if (collisionPointIsCorner(maybeCollision)) {
+                    this.center = this.getVelocity().applyToPoint(this.center);
+                } else {
+                    this.setVelocity(maybeCollision.collisionObject().hit(findCloserCorner(maybeCollision), this.v));
+                    this.center = this.getVelocity().applyToPoint(findCloserCorner(maybeCollision));
+                }
+
+            } else {
+                maybeCollision = this.g.getClosestCollision(
+                        new Line(this.center, this.getVelocity().applyToPoint(this.center)));
+                if (maybeCollision != null) {
                     this.setVelocity(maybeCollision.collisionObject().hit(maybeCollision.collisionPoint(), this.v));
                 }
+
             }
 
             if (this.g.getListOfCollidables().get(0).getCollisionRectangle().getUpperLeft().getY()
                     < this.center.getY()) {
-                this.center = new Point(center.getX(), this.center.getY() - (this.r));}
+                this.center = new Point(center.getX(), this.center.getY() - (this.r));
+            }
 
-        } else  {
+        } else {
             this.center = this.getVelocity().applyToPoint(this.center);
+        }
+        for (int i = 1; i < g.getListOfCollidables().size(); i++) {
+            Rectangle collRec = g.getListOfCollidables().get(i).getCollisionRectangle();
+            Point upperLeft = collRec.getUpperLeft();
+            Point upperRight = collRec.getUpperRight();
+            double height = collRec.getHeight();
+            if (upperLeft.getX() < center.getX() && upperRight.getX() > center.getX()
+                    && upperRight.getY() < center.getY() && height + upperRight.getY() > center.getY()) {
+                if (upperLeft.getX() > 0) {
+                    this.center = new Point(35, 35);
+                } else {
+                    this.center = new Point(775, 25);
+                }
+            }
         }
 
     }
@@ -169,7 +220,7 @@ public class Ball implements Sprite {
      */
     public void addToGame(Game game) {
         game.addSprite(this);
-        this.setGameEnviroment(game.getEnvironment());
+        this.setGameEnvironment(game.getEnvironment());
 
     }
 }

@@ -104,20 +104,20 @@ public class Paddle implements Sprite, Collidable {
 
         double paddleX = this.rect.getUpperLeft().getX();
         double collisionPointX = collisionPoint.getX();
-        double paddlePart = (this.rect.getWidth() / 5 + paddleX);
+        double partOfPaddle = (this.rect.getWidth() / 5 + paddleX);
         double speed = Math.sqrt(Math.pow(currentVelocity.getDx(), 2) + Math.pow(currentVelocity.getDy(), 2));
 
-        if (collisionPointX < this.rect.getBottomRight().getX() || collisionPointX > this.rect.getUpperLeft().getX()) {
+        if (collisionPointX > this.rect.getBottomRight().getX() || collisionPointX < this.rect.getUpperLeft().getX()) {
             return new Velocity((-1) * currentVelocity.getDx(), (-1) * currentVelocity.getDy());
         } else if (collisionPoint.getY() > this.rect.getUpperLeft().getY()) {
-            return new Velocity((-1)*currentVelocity.getDx(), (-1) * currentVelocity.getDy());
-        } else if (collisionPointX <= paddlePart) {
-            return Velocity.fromAngleAndSpeed(30, speed);
-        } else if (collisionPointX <= 2 * paddlePart) {
-            return Velocity.fromAngleAndSpeed(60, speed);
-        } else if (collisionPointX <= 3 * paddlePart) {
+            return new Velocity((-1) * currentVelocity.getDx(), (-1) * currentVelocity.getDy());
+        } else if (collisionPointX <= partOfPaddle) {
+            return Velocity.fromAngleAndSpeed(300, speed);
+        } else if (collisionPointX <= 2 * partOfPaddle) {
+            return Velocity.fromAngleAndSpeed(330, speed);
+        } else if (collisionPointX <= 3 * partOfPaddle) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
-        } else if (collisionPointX <= 4 * paddlePart) {
+        } else if (collisionPointX <= 4 * partOfPaddle) {
             return Velocity.fromAngleAndSpeed(120, speed);
         } else {
             return Velocity.fromAngleAndSpeed(150, speed);

@@ -111,15 +111,19 @@ public class Game {
      */
     public void addBorderBlock() {
         //add border blocks to GE
+        double widthTop = gui.getDrawSurface().getWidth();
+        double widthSides = 20;
+        double widthBottom = widthTop - 2 * widthSides;
+        double heightSides = gui.getDrawSurface().getHeight() - widthSides;
         Point one = new Point(0, 0);
         Point two = new Point(20, 580);
         Point three = new Point(780, 20);
         Point four = new Point(0, 20);
         List<Block> blockList = new ArrayList<>();
-        blockList.add(new Block(new Rectangle(two, 760, 20, Color.GRAY)));
-        blockList.add(new Block(new Rectangle(four, 20, 580, Color.GRAY)));
-        blockList.add(new Block(new Rectangle(three, 20, 580, Color.GRAY)));
-        blockList.add(new Block(new Rectangle(one, 800, 20, Color.GRAY)));
+        blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY)));
+        blockList.add(new Block(new Rectangle(four, widthSides, heightSides, Color.GRAY)));
+        blockList.add(new Block(new Rectangle(three, widthSides, heightSides, Color.GRAY)));
+        blockList.add(new Block(new Rectangle(one, widthTop, widthSides, Color.GRAY)));
 
 
         for (Block x : blockList) {
@@ -133,7 +137,7 @@ public class Game {
      * and add them to the game.
      */
     public void initialize() {
-        Ball ball1 = new Ball(new Point(20, 580), 5, Color.MAGENTA);
+        Ball ball1 = new Ball(new Point(775, 25), 5, Color.MAGENTA);
 //        Velocity v1 = Velocity.fromAngleAndSpeed(45,5);
         Velocity v1 = new Velocity(-4, 4);
         ball1.setVelocity(v1);
