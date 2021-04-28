@@ -138,13 +138,11 @@ public class Game {
      */
     public void initialize() {
         Ball ball1 = new Ball(new Point(775, 25), 5, Color.MAGENTA);
-//        Velocity v1 = Velocity.fromAngleAndSpeed(45,5);
-        Velocity v1 = new Velocity(-4, 4);
+        Velocity v1 = Velocity.fromAngleAndSpeed(45,5);
         ball1.setVelocity(v1);
         ball1.addToGame(this);
         Ball ball2 = new Ball(new Point(760, 560), 5, Color.MAGENTA);
-//        Velocity v2 = Velocity.fromAngleAndSpeed(45,5);
-        Velocity v2 = new Velocity(4, 4);
+        Velocity v2 = Velocity.fromAngleAndSpeed(45,5);
         ball2.setVelocity(v2);
         ball2.addToGame(this);
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
