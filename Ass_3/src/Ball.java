@@ -116,36 +116,27 @@ public class Ball implements Sprite {
      * Called from drawAnimation. This function moves the ball forward one step according to its given velocity.
      */
     public void moveOneStep() {
-        CollisionInfo tmp;
-        tmp = this.g.getClosestCollision(new Line(this.center, this.getVelocity().applyToPoint(this.center)));
-        if (tmp != null) {
-            this.setVelocity(tmp.collisionObject().hit(tmp.collisionPoint(), this.v));
-            if (this.g.getListOfCollidables().get(0).getCollisionRectangle().getUpperLeft().getY()
-                    < this.center.getY()) {
-                this.center = new Point(center.getX(), this.center.getY() - (this.r / 2));
-            }
-            for (int i = 1; i < g.getListOfCollidables().size(); i++) {
-                Rectangle collRec = g.getListOfCollidables().get(i).getCollisionRectangle();
-                Point leftmost = collRec.getUpperLeft();
-                Point rightMost = collRec.getUpperRight();
-                double iHeight = collRec.getHeight();
-                //spit ball out on opposite upper corner if gets trapped by the paddle
-                if (leftmost.getX() < center.getX()
-                        && rightMost.getX() > center.getX()
-                        && rightMost.getY() < center.getY()
-                        && iHeight + rightMost.getY() > center.getY()) {
-                    if (leftmost.getX() > 0) {
-                        this.center = new Point(collRec.getBottomLeft().getX() - 4,
-                                collRec.getBottomLeft().getX() + 4);
-                    } else {
-                        this.center = new Point(730, 50);
-                    }
+        CollisionInfo maybeCollision = this.g.getClosestCollision
+                (new Line(this.center, this.getVelocity().applyToPoint(this.center)));
+        if (maybeCollision != null) {
+            this.setVelocity(maybeCollision.collisionObject().hit(maybeCollision.collisionPoint(), this.v));
+            if (maybeCollision.collisionPoint().equals(this.center)){
+                this.center = this.getVelocity().applyToPoint(this.center);
+            } else  {
+                maybeCollision = this.g.getClosestCollision
+                        (new Line(this.center, this.getVelocity().applyToPoint(this.center)));
+                if (maybeCollision != null){
+                    this.setVelocity(maybeCollision.collisionObject().hit(maybeCollision.collisionPoint(), this.v));
                 }
             }
+
+            if (this.g.getListOfCollidables().get(0).getCollisionRectangle().getUpperLeft().getY()
+                    < this.center.getY()) {
+                this.center = new Point(center.getX(), this.center.getY() - (this.r));}
+
+        } else  {
             this.center = this.getVelocity().applyToPoint(this.center);
-            return;
         }
-        this.center = this.getVelocity().applyToPoint(this.center);
 
     }
 
