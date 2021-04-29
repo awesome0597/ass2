@@ -308,14 +308,11 @@ public class Line {
      * @return true or false
      */
     private boolean isLineContainedY(Line one, Line two) {
-        if (((one.start.getY() > two.start.getY()) && (one.start.getY() < two.end.getY()))
-                || ((one.start.getY() < two.start.getY()) && (one.start.getY() > two.end.getY()))) {
-            return true;
-        } else if (((one.end.getY() > two.start.getY()) && (one.end.getY() < two.end.getY()))
-                || ((one.end.getY() < two.start.getY()) && (one.end.getY() > two.end.getY()))) {
-            return true;
-        }
-        return false;
+        return ((((one.start.getY() > two.start.getY()) && (one.start.getY() < two.end.getY()))
+                || ((one.start.getY() < two.start.getY()) && (one.start.getY() > two.end.getY())))
+                || (((one.end.getY() > two.start.getY()) && (one.end.getY() < two.end.getY()))
+                || ((one.end.getY() < two.start.getY()) && (one.end.getY() > two.end.getY()))));
+
     }
 
     /**
@@ -327,14 +324,10 @@ public class Line {
      * @return true or false
      */
     private boolean isLineContainedX(Line one, Line two) {
-        if (((one.start.getX() > two.start.getX()) && (one.start.getX() < two.end.getX()))
-                || ((one.start.getX() < two.start.getX()) && (one.start.getX() > two.end.getX()))) {
-            return true;
-        } else if (((one.end.getX() > two.start.getX()) && (one.end.getX() < two.end.getX()))
-                || ((one.end.getX() < two.start.getX()) && (one.end.getX() > two.end.getX()))) {
-            return true;
-        }
-        return false;
+        return (((one.start.getX() > two.start.getX()) && (one.start.getX() < two.end.getX()))
+                || ((one.start.getX() < two.start.getX()) && (one.start.getX() > two.end.getX())))
+                || (((one.end.getX() > two.start.getX()) && (one.end.getX() < two.end.getX()))
+                || ((one.end.getX() < two.start.getX()) && (one.end.getX() > two.end.getX())));
     }
 
     /**

@@ -118,16 +118,17 @@ public class Ball implements Sprite {
      * @param collision type Collision Info
      * @return type Point
      */
-    public boolean collisionPointIsCorner(CollisionInfo collision) {
-        Rectangle rect = collision.collisionObject().getCollisionRectangle();
-        return collision.collisionPoint().equals(rect.getUpperRight())
-                || collision.collisionPoint().equals(rect.getBottomRight())
-                || collision.collisionPoint().equals(rect.getUpperLeft())
-                || collision.collisionPoint().equals(rect.getBottomLeft());
-    }
+//    public boolean collisionPointIsCorner(CollisionInfo collision) {
+//        Rectangle rect = collision.collisionObject().getCollisionRectangle();
+//        return collision.collisionPoint().equals(rect.getUpperRight())
+//                || collision.collisionPoint().equals(rect.getBottomRight())
+//                || collision.collisionPoint().equals(rect.getUpperLeft())
+//                || collision.collisionPoint().equals(rect.getBottomLeft());
+//    }
 
     /**
      * Method that finds the closer corner to the collision point.
+     *
      * @param collision type Collision Info
      * @return type Point
      */
@@ -142,6 +143,28 @@ public class Ball implements Sprite {
     }
 
     /**
+     * Method that checks if applying velocity to point sends it into a different collidable.
+     *
+     * @param ball type Ball
+     * @return true or false
+     */
+    public boolean isInCollidable(Ball ball) {
+        for (int i = 1; i < g.getListOfCollidables().size(); i++) {
+            Rectangle collRec = g.getListOfCollidables().get(i).getCollisionRectangle();
+            Point upperLeft = collRec.getUpperLeft();
+            Point upperRight = collRec.getUpperRight();
+            double height = collRec.getHeight();
+            if (upperLeft.getX() < ball.getX() && upperRight.getX() > ball.getX()
+                    && upperRight.getY() < ball.getY() && height + upperRight.getY() > ball.getY()) {
+                if (upperLeft.getX() > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Called from drawAnimation. This function moves the ball forward one step according to its given velocity.
      */
     public void moveOneStep() {
@@ -150,11 +173,13 @@ public class Ball implements Sprite {
         if (maybeCollision != null) {
             this.setVelocity(maybeCollision.collisionObject().hit(maybeCollision.collisionPoint(), this.v));
             if (maybeCollision.collisionPoint().equals(this.center)) {
-                if (collisionPointIsCorner(maybeCollision)) {
-                    this.center = this.getVelocity().applyToPoint(this.center);
-                } else {
+                Ball tmpBall = this;
+                tmpBall.center = this.getVelocity().applyToPoint(tmpBall.center);
+                if (isInCollidable(tmpBall)) { //if moving ball traps it in a collidable change velocity again.
                     this.setVelocity(maybeCollision.collisionObject().hit(findCloserCorner(maybeCollision), this.v));
                     this.center = this.getVelocity().applyToPoint(findCloserCorner(maybeCollision));
+                } else {
+                    this.center = this.getVelocity().applyToPoint(this.center);
                 }
 
             } else {
@@ -174,21 +199,9 @@ public class Ball implements Sprite {
         } else {
             this.center = this.getVelocity().applyToPoint(this.center);
         }
-        for (int i = 1; i < g.getListOfCollidables().size(); i++) {
-            Rectangle collRec = g.getListOfCollidables().get(i).getCollisionRectangle();
-            Point upperLeft = collRec.getUpperLeft();
-            Point upperRight = collRec.getUpperRight();
-            double height = collRec.getHeight();
-            if (upperLeft.getX() < center.getX() && upperRight.getX() > center.getX()
-                    && upperRight.getY() < center.getY() && height + upperRight.getY() > center.getY()) {
-                if (upperLeft.getX() > 0) {
-                    this.center = new Point(35, 35);
-                } else {
-                    this.center = new Point(775, 25);
-                }
-            }
+        if (isInCollidable(this)) {
+            this.center = new Point(35, 35);
         }
-
     }
 
 
@@ -198,10 +211,8 @@ public class Ball implements Sprite {
      * @param surface type DrawSurface
      */
     public void drawOn(DrawSurface surface) {
-        //draw full black shape fpr outline
         surface.setColor(this.getColor());
         surface.fillCircle((int) this.center.getX(), (int) this.center.getY(), this.getSize());
-        //draw shape with 1 width border
         surface.setColor(Color.BLACK);
         surface.drawCircle((int) this.center.getX(), (int) this.center.getY(), this.getSize() - 1);
     }
