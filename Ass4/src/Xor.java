@@ -1,10 +1,12 @@
 //322094111
+
 import java.util.Map;
+
 /**
  * @author Adira Weiss.
  * @version 1.0.0
  * @since: 23/5/21
- * Class that creates a value.
+ * Class that creates a Xor Expression, inherits from BinaryExpression class.
  * <p>
  **/
 
@@ -22,14 +24,13 @@ public class Xor extends BinaryExpression {
     @Override
     public Boolean evaluate(Map<String, Boolean> assignment) throws Exception {
 
-        return (this.getE1().evaluate(assignment) ^ this.getE2().evaluate(assignment));
-
+        return (this.getE1().evaluate(assignment) != this.getE2().evaluate(assignment));
 
     }
 
     @Override
     public String toString() {
-        return ("(" + getE1().toString() + "^" + getE2().toString() + ")");
+        return ("(" + getE1().toString() + " ^ " + getE2().toString() + ")");
     }
 
     @Override
@@ -53,34 +54,34 @@ public class Xor extends BinaryExpression {
     }
 
     @Override
-    public Expression simplify(){
+    public Expression simplify() {
         Expression one = getE1().simplify();
         Expression two = getE2().simplify();
 
         try {
-            if (one.getVariables().isEmpty() && two.getVariables().isEmpty()){
+            if (one.getVariables().isEmpty() && two.getVariables().isEmpty()) {
                 return new Val(this.evaluate());
             }
-            if (one.getVariables().isEmpty()){
-                if (one.evaluate()){
-                    return new Val(two.evaluate());
-                } else  {
-                    return new Val(false);
+            if (one.getVariables().isEmpty()) {
+                if (one.evaluate()) {
+                    return new Not(two);
+                } else {
+                    return two;
                 }
             }
-            if (two.getVariables().isEmpty()){
-                if (two.evaluate()){
-                    return one.simplify();
-                } else  {
-                    return new Val(false);
+            if (two.getVariables().isEmpty()) {
+                if (two.evaluate()) {
+                    return new Not(one);
+                } else {
+                    return one;
                 }
             }
-            if (one.toString() == two.toString()){
+            if (one.toString().equals(two.toString())) {
                 return new Val(false);
-            } else  {
-                return new Xor(one,two);
+            } else {
+                return new Xor(one, two);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Xor Exception Thrown!");
             return null;
         }

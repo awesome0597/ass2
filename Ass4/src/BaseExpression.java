@@ -2,16 +2,15 @@
 
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.List;
-import java.util.LinkedList;
 
 /**
  * @author Adira Weiss.
  * @version 1.0.0
  * @since: 23/5/21
- * Class that creates a base expression.
+ * Class that creates a base expression, implements Expression interface.
  * <p>
  **/
+
 public abstract class BaseExpression implements Expression {
     private Expression e1;
     private Expression e2;
@@ -36,10 +35,20 @@ public abstract class BaseExpression implements Expression {
         this.e1 = expression;
     }
 
+    /**
+     * Access method.
+     *
+     * @return type Expression
+     */
     public Expression getE1() {
         return e1;
     }
 
+    /**
+     * Access method.
+     *
+     * @return type Expression
+     */
     public Expression getE2() {
         return e2;
     }

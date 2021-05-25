@@ -1,12 +1,14 @@
 //322094111
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Adira Weiss.
  * @version 1.0.0
  * @since: 23/5/21
- * Class that creates a value.
+ * Class that creates a value, implements Expression interface.
  * <p>
  **/
 
@@ -23,6 +25,11 @@ public class Val implements Expression {
         this.value = val;
     }
 
+    /**
+     * Access method.
+     *
+     * @return type boolean.
+     */
     public boolean getValue() {
         return this.value;
     }
@@ -73,7 +80,7 @@ public class Val implements Expression {
     }
 
     @Override
-    public Expression simplify(){
+    public Expression simplify() {
         return this;
     }
 }

@@ -3,13 +3,13 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+
 
 /**
  * @author Adira Weiss.
  * @version 1.0.0
  * @since: 23/5/21
- * Class that creates a variable.
+ * Class that creates a variable, implements Expression interface.
  * <p>
  **/
 
@@ -25,6 +25,11 @@ public class Var implements Expression {
         this.variable = var;
     }
 
+    /**
+     * Access method.
+     *
+     * @return type String.
+     */
     public String getVariable() {
         return variable;
     }
@@ -74,7 +79,7 @@ public class Var implements Expression {
     }
 
     @Override
-    public Expression simplify(){
+    public Expression simplify() {
         return this;
     }
 }

@@ -1,10 +1,12 @@
 //322094111
+
 import java.util.Map;
+
 /**
  * @author Adira Weiss.
  * @version 1.0.0
  * @since: 23/5/21
- * Class that creates a value.
+ * Class that deals with And Expressions, inherits from BinaryExpression.
  * <p>
  **/
 public class And extends BinaryExpression {
@@ -27,7 +29,7 @@ public class And extends BinaryExpression {
 
     @Override
     public String toString() {
-        return ("(" + getE1().toString() + "&" + getE2().toString() + ")");
+        return ("(" + getE1().toString() + " & " + getE2().toString() + ")");
     }
 
     @Override
@@ -49,34 +51,34 @@ public class And extends BinaryExpression {
     }
 
     @Override
-    public Expression simplify(){
+    public Expression simplify() {
         Expression one = getE1().simplify();
         Expression two = getE2().simplify();
 
         try {
-            if (one.getVariables().isEmpty() && two.getVariables().isEmpty()){
+            if (one.getVariables().isEmpty() && two.getVariables().isEmpty()) {
                 return new Val(this.evaluate());
             }
-            if (one.getVariables().isEmpty()){
-                if (one.evaluate()){
+            if (one.getVariables().isEmpty()) {
+                if (one.evaluate()) {
                     return two.simplify();
-                } else  {
+                } else {
                     return new Val(false);
                 }
             }
-            if (two.getVariables().isEmpty()){
-                if (two.evaluate()){
+            if (two.getVariables().isEmpty()) {
+                if (two.evaluate()) {
                     return one.simplify();
-                } else  {
+                } else {
                     return new Val(false);
                 }
             }
-            if (one.toString() == two.toString()){
+            if (one.toString().equals(two.toString())) {
                 return one.simplify();
-            } else  {
-                return new And(one,two);
+            } else {
+                return new And(one, two);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("And Exception Thrown!");
             return null;
         }

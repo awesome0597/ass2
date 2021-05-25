@@ -6,7 +6,7 @@ import java.util.Map;
  * @author Adira Weiss.
  * @version 1.0.0
  * @since: 23/5/21
- * Class that creates a value.
+ * Class that deals with Not Expressions,  inherits from UnaryExpression.
  * <p>
  **/
 
@@ -50,19 +50,19 @@ public class Not extends UnaryExpression {
     }
 
     @Override
-    public Expression simplify(){
+    public Expression simplify() {
 
         Expression one = this.getE1().simplify();
         try {
-            if (one.getVariables().isEmpty()){
-                return new Val(true);
-            } else if (!one.getVariables().isEmpty()){
-                return new Val(false);
-            } else  {
-                return new Not(one);
+            if (one.getVariables().isEmpty()) {
+                if (one.evaluate()) {
+                    return new Val(false);
+                } else {
+                    return new Val(true);
+                }
             }
-
-        } catch (Exception e){
+            return new Not(one);
+        } catch (Exception e) {
             System.out.println("Not Exception Thrown");
             return null;
         }

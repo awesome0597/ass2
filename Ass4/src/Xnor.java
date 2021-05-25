@@ -1,12 +1,15 @@
 //322094111
+
 import java.util.Map;
+
 /**
  * @author Adira Weiss.
  * @version 1.0.0
  * @since: 23/5/21
- * Class that creates a value.
+ * Class that creates a Xnor Expression, inherits from BinaryExpression class.
  * <p>
  **/
+
 public class Xnor extends BinaryExpression {
     /**
      * constructor.
@@ -28,7 +31,7 @@ public class Xnor extends BinaryExpression {
 
     @Override
     public String toString() {
-        return ("(" + getE1().toString() + "#" + getE2().toString() + ")");
+        return ("(" + getE1().toString() + " # " + getE2().toString() + ")");
     }
 
     @Override
@@ -37,17 +40,51 @@ public class Xnor extends BinaryExpression {
     }
 
     @Override
-    public Expression nandify(){
+    public Expression nandify() {
 // [ ( A NAND A ) NAND ( B NAND B ) ] NAND ( A NAND B )
-        return new Nand(new Nand(new Nand(this.getE1().nandify(),this.getE1().nandify()),
-                new Nand(this.getE2().nandify(),this.getE2().nandify())),
-                new Nand(this.getE1().nandify(),this.getE2().nandify()));
+        return new Nand(new Nand(new Nand(this.getE1().nandify(), this.getE1().nandify()),
+                new Nand(this.getE2().nandify(), this.getE2().nandify())),
+                new Nand(this.getE1().nandify(), this.getE2().nandify()));
     }
 
     @Override
-    public Expression norify(){
+    public Expression norify() {
 // [ A NOR ( A NOR B ) ] NOR [ B NOR ( A NOR B ) ]
-        return new Nor(new Nor(this.getE1().norify(),new Nor(this.getE1().norify(),this.getE2().norify())),
-                new Nor(this.getE2(),new Nor(this.getE1(),this.getE2())));
+        return new Nor(new Nor(this.getE1().norify(), new Nor(this.getE1().norify(), this.getE2().norify())),
+                new Nor(this.getE2().norify(), new Nor(this.getE1().norify(), this.getE2().norify())));
+    }
+
+    @Override
+    public Expression simplify() {
+        Expression one = getE1().simplify();
+        Expression two = getE2().simplify();
+
+        try {
+            if (one.getVariables().isEmpty() && two.getVariables().isEmpty()) {
+                return new Val(this.evaluate());
+            }
+            if (one.getVariables().isEmpty()) {
+                if (one.evaluate()) {
+                    return two.simplify();
+                } else {
+                    return new Xnor(one, two);
+                }
+            }
+            if (two.getVariables().isEmpty()) {
+                if (two.evaluate()) {
+                    return one.simplify();
+                } else {
+                    return new Xnor(one, two);
+                }
+            }
+            if (one.toString().equals(two.toString())) {
+                return new Val(true);
+            } else {
+                return new Xnor(one, two);
+            }
+        } catch (Exception e) {
+            System.out.println("Xnor Exception Thrown!");
+            return null;
+        }
     }
 }
