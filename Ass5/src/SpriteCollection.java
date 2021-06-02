@@ -25,6 +25,10 @@ public class SpriteCollection {
         this.listOfSprites = new ArrayList<Sprite>();
     }
 
+    public List<Sprite> getListOfSprites() {
+        return this.listOfSprites;
+    }
+
     /**
      * adds sprite to the list of sprites.
      *

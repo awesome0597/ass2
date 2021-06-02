@@ -171,12 +171,14 @@ public class Ball implements Sprite {
         CollisionInfo maybeCollision = this.g.getClosestCollision(
                 new Line(this.center, this.getVelocity().applyToPoint(this.center)));
         if (maybeCollision != null) {
-            this.setVelocity(maybeCollision.collisionObject().hit(maybeCollision.collisionPoint(), this.v));
+            this.setVelocity(maybeCollision.collisionObject().
+                    hit(this, maybeCollision.collisionPoint(), this.v));
             if (maybeCollision.collisionPoint().equals(this.center)) {
                 Ball tmpBall = this;
                 tmpBall.center = this.getVelocity().applyToPoint(tmpBall.center);
                 if (isInCollidable(tmpBall)) { //if moving ball traps it in a collidable change velocity again.
-                    this.setVelocity(maybeCollision.collisionObject().hit(findCloserCorner(maybeCollision), this.v));
+                    this.setVelocity(maybeCollision.collisionObject().
+                            hit(this, findCloserCorner(maybeCollision), this.v));
                     this.center = this.getVelocity().applyToPoint(findCloserCorner(maybeCollision));
                 } else {
                     this.center = this.getVelocity().applyToPoint(this.center);
@@ -186,7 +188,8 @@ public class Ball implements Sprite {
                 maybeCollision = this.g.getClosestCollision(
                         new Line(this.center, this.getVelocity().applyToPoint(this.center)));
                 if (maybeCollision != null) {
-                    this.setVelocity(maybeCollision.collisionObject().hit(maybeCollision.collisionPoint(), this.v));
+                    this.setVelocity(maybeCollision.collisionObject().
+                            hit(this, maybeCollision.collisionPoint(), this.v));
                 }
 
             }

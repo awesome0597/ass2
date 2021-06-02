@@ -100,7 +100,7 @@ public class Paddle implements Sprite, Collidable {
      * @param currentVelocity current velocity of the moving ball
      * @return type Velocity
      */
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
 
         double paddleX = this.rect.getUpperLeft().getX();
         double collisionPointX = collisionPoint.getX();

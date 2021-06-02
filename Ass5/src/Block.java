@@ -1,5 +1,8 @@
 import biuoop.DrawSurface;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.Color;
 
 /**
@@ -13,17 +16,22 @@ import java.awt.Color;
  * that can be accessed. There is a method that changes a balls velocity if it is enroute to collide with it.
  **/
 
-public class Block implements Collidable, Sprite {
+public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle rect;
+    private List<HitListener> hitListeners;
 
     /**
      * constructor.
      *
      * @param rect type Rectangle.
      */
-    public Block(Rectangle rect) {
+    public Block(Rectangle rect, PrintingHitListener pl) {
         this.rect = rect;
+       this.hitListeners = new ArrayList<HitListener>();
+       this.hitListeners.add(pl);
     }
+
+
 
     /**
      * accessor.
@@ -57,6 +65,15 @@ public class Block implements Collidable, Sprite {
                 || collisionPoint.getY() == this.rect.getBottomRight().getY();
     }
 
+    private void notifyHit(Ball hitter) {
+        // Make a copy of the hitListeners before iterating over them.
+        List<HitListener> listeners = new ArrayList<HitListener>(this.hitListeners);
+        // Notify all listeners about a hit event:
+        for (HitListener hl : listeners) {
+            hl.hitEvent(this, hitter);
+        }
+    }
+
     /**
      * Notify the object that we collided with it at collisionPoint with a given velocity. The return is the new
      * velocity expected after the hit (based on the force the object inflicted on us). If we hit the y axis we change
@@ -67,7 +84,8 @@ public class Block implements Collidable, Sprite {
      * @param currentVelocity type Velocity
      * @return type Velocity
      */
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
+        this.notifyHit(hitter);
         if (collisionWithX(collisionPoint) && collisionWithY(collisionPoint)) {
             return new Velocity((-1) * currentVelocity.getDx(), (-1) * currentVelocity.getDy());
         } else if (collisionWithX(collisionPoint)) {
@@ -109,5 +127,20 @@ public class Block implements Collidable, Sprite {
         g.addCollidable(this);
         g.addSprite(this);
 
+    }
+
+    public void removeFromGame(Game g) {
+        g.removeCollidable(this);
+        g.removeSprite(this);
+    }
+
+    @Override
+    public void addHitListener(HitListener hl) {
+        this.hitListeners.add(hl);
+    }
+
+    @Override
+    public void removeHitListener(HitListener hl) {
+        this.hitListeners.remove(hl);
     }
 }

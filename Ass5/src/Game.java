@@ -71,6 +71,14 @@ public class Game {
         this.sprites.addSprite(s);
     }
 
+    public void removeCollidable(Collidable c) {
+        this.environment.getListOfCollidables().remove(c);
+    }
+
+    public void removeSprite(Sprite s) {
+        this.sprites.getListOfSprites().remove(s);
+    }
+
     /**
      * random color generator.
      *
@@ -87,7 +95,7 @@ public class Game {
     /**
      * adds Obstacle Blocks to game.
      */
-    public void addObstacleBlock() {
+    public void addObstacleBlock(PrintingHitListener print) {
         int numOfCollums = 7;
         int numOfRows = 6;
         Point start = new Point(430, 300);
@@ -97,19 +105,20 @@ public class Game {
             Color random = getRandomColor();
             for (int j = 0; j < numOfCollums; j++) {
                 Block block = new Block(new Rectangle(
-                        new Point(start.getX() + (width * j), start.getY()), width, height, random));
+                        new Point(start.getX() + (width * j), start.getY()), width, height, random), print);
                 block.addToGame(this);
+                block.addHitListener(print);
             }
             start = new Point(start.getX() - width, start.getY() - height);
             numOfCollums++;
         }
-        addBorderBlock();
+        addBorderBlock(print);
     }
 
     /**
      * adds Border Blocks to game.
      */
-    public void addBorderBlock() {
+    public void addBorderBlock(PrintingHitListener print) {
         //add border blocks to GE
         double widthTop = gui.getDrawSurface().getWidth();
         double widthSides = 20;
@@ -120,10 +129,10 @@ public class Game {
         Point three = new Point(780, 20);
         Point four = new Point(0, 20);
         List<Block> blockList = new ArrayList<>();
-        blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY)));
-        blockList.add(new Block(new Rectangle(four, widthSides, heightSides, Color.GRAY)));
-        blockList.add(new Block(new Rectangle(three, widthSides, heightSides, Color.GRAY)));
-        blockList.add(new Block(new Rectangle(one, widthTop, widthSides, Color.GRAY)));
+        blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY), print));
+        blockList.add(new Block(new Rectangle(four, widthSides, heightSides, Color.GRAY), print));
+        blockList.add(new Block(new Rectangle(three, widthSides, heightSides, Color.GRAY), print));
+        blockList.add(new Block(new Rectangle(one, widthTop, widthSides, Color.GRAY), print));
 
 
         for (Block x : blockList) {
@@ -137,6 +146,7 @@ public class Game {
      * and add them to the game.
      */
     public void initialize() {
+        PrintingHitListener print = new PrintingHitListener();
         Ball ball1 = new Ball(new Point(775, 25), 5, Color.MAGENTA);
         Velocity v1 = Velocity.fromAngleAndSpeed(45, 5);
         ball1.setVelocity(v1);
@@ -148,7 +158,7 @@ public class Game {
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
         paddle.getCollisionRectangle().setColor(Color.YELLOW);
         paddle.addToGame(this);
-        addObstacleBlock();
+        addObstacleBlock(print);
     }
 
     /**
