@@ -25,12 +25,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
      *
      * @param rect type Rectangle.
      */
-    public Block(Rectangle rect, PrintingHitListener pl) {
+    public Block(Rectangle rect, BlockRemover br) {
         this.rect = rect;
-       this.hitListeners = new ArrayList<HitListener>();
-       this.hitListeners.add(pl);
+        this.hitListeners = new ArrayList<HitListener>();
+        this.hitListeners.add(br);
     }
-
 
 
     /**
@@ -85,14 +84,18 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @return type Velocity
      */
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
-        this.notifyHit(hitter);
+
         if (collisionWithX(collisionPoint) && collisionWithY(collisionPoint)) {
+            this.notifyHit(hitter);
             return new Velocity((-1) * currentVelocity.getDx(), (-1) * currentVelocity.getDy());
         } else if (collisionWithX(collisionPoint)) {
+            this.notifyHit(hitter);
             return new Velocity((-1) * currentVelocity.getDx(), currentVelocity.getDy());
         } else if (collisionWithY(collisionPoint)) {
+            this.notifyHit(hitter);
             return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
         } else {
+            this.notifyHit(hitter);
             return currentVelocity;
         }
     }

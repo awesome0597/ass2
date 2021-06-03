@@ -24,6 +24,7 @@ public class Game {
     private GameEnvironment environment;
     private GUI gui;
     private Sleeper sleeper;
+    private Counter remainingblocks;
 
     /**
      * constructor.
@@ -33,6 +34,7 @@ public class Game {
         this.environment = new GameEnvironment();
         this.gui = new GUI("blah blah blah, joke joke joke, commentary.", 800, 600);
         this.sleeper = new Sleeper();
+        this.remainingblocks = new Counter();
     }
 
     /**
@@ -51,6 +53,10 @@ public class Game {
      */
     public SpriteCollection getSprites() {
         return this.sprites;
+    }
+
+    public Counter getRemainingblocks(){
+        return this.remainingblocks;
     }
 
     /**
@@ -95,7 +101,7 @@ public class Game {
     /**
      * adds Obstacle Blocks to game.
      */
-    public void addObstacleBlock(PrintingHitListener print) {
+    public void addObstacleBlock(BlockRemover br) {
         int numOfCollums = 7;
         int numOfRows = 6;
         Point start = new Point(430, 300);
@@ -105,20 +111,20 @@ public class Game {
             Color random = getRandomColor();
             for (int j = 0; j < numOfCollums; j++) {
                 Block block = new Block(new Rectangle(
-                        new Point(start.getX() + (width * j), start.getY()), width, height, random), print);
+                        new Point(start.getX() + (width * j), start.getY()), width, height, random), br);
                 block.addToGame(this);
-                block.addHitListener(print);
+                block.addHitListener(br);
             }
             start = new Point(start.getX() - width, start.getY() - height);
             numOfCollums++;
         }
-        addBorderBlock(print);
+        addBorderBlock(br);
     }
 
     /**
      * adds Border Blocks to game.
      */
-    public void addBorderBlock(PrintingHitListener print) {
+    public void addBorderBlock(BlockRemover br) {
         //add border blocks to GE
         double widthTop = gui.getDrawSurface().getWidth();
         double widthSides = 20;
@@ -129,10 +135,10 @@ public class Game {
         Point three = new Point(780, 20);
         Point four = new Point(0, 20);
         List<Block> blockList = new ArrayList<>();
-        blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY), print));
-        blockList.add(new Block(new Rectangle(four, widthSides, heightSides, Color.GRAY), print));
-        blockList.add(new Block(new Rectangle(three, widthSides, heightSides, Color.GRAY), print));
-        blockList.add(new Block(new Rectangle(one, widthTop, widthSides, Color.GRAY), print));
+        blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY), br));
+        blockList.add(new Block(new Rectangle(four, widthSides, heightSides, Color.GRAY), br));
+        blockList.add(new Block(new Rectangle(three, widthSides, heightSides, Color.GRAY), br));
+        blockList.add(new Block(new Rectangle(one, widthTop, widthSides, Color.GRAY), br));
 
 
         for (Block x : blockList) {
@@ -146,19 +152,20 @@ public class Game {
      * and add them to the game.
      */
     public void initialize() {
-        PrintingHitListener print = new PrintingHitListener();
-        Ball ball1 = new Ball(new Point(775, 25), 5, Color.MAGENTA);
+       // PrintingHitListener print = new PrintingHitListener();
+        BlockRemover br = new BlockRemover(this,this.remainingblocks);
+        Ball ball1 = new Ball(new Point(600, 560), 5, Color.MAGENTA);
         Velocity v1 = Velocity.fromAngleAndSpeed(45, 5);
         ball1.setVelocity(v1);
         ball1.addToGame(this);
-        Ball ball2 = new Ball(new Point(760, 560), 5, Color.MAGENTA);
+        Ball ball2 = new Ball(new Point(650, 560), 5, Color.MAGENTA);
         Velocity v2 = Velocity.fromAngleAndSpeed(45, 5);
         ball2.setVelocity(v2);
         ball2.addToGame(this);
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
         paddle.getCollisionRectangle().setColor(Color.YELLOW);
         paddle.addToGame(this);
-        addObstacleBlock(print);
+        addObstacleBlock(br);
     }
 
     /**
