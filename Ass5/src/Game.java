@@ -25,6 +25,7 @@ public class Game {
     private GUI gui;
     private Sleeper sleeper;
     private Counter remainingblocks;
+    private Counter remainingballs;
 
     /**
      * constructor.
@@ -35,6 +36,7 @@ public class Game {
         this.gui = new GUI("blah blah blah, joke joke joke, commentary.", 800, 600);
         this.sleeper = new Sleeper();
         this.remainingblocks = new Counter();
+        this.remainingballs = new Counter();
     }
 
     /**
@@ -55,8 +57,12 @@ public class Game {
         return this.sprites;
     }
 
-    public Counter getRemainingblocks(){
+    public Counter getRemainingblocks() {
         return this.remainingblocks;
+    }
+
+    public Counter getRemainingballs() {
+        return this.remainingballs;
     }
 
     /**
@@ -102,8 +108,8 @@ public class Game {
      * adds Obstacle Blocks to game.
      */
     public void addObstacleBlock(BlockRemover br) {
-        int numOfCollums = 7;
-        int numOfRows = 6;
+        int numOfCollums = 1;
+        int numOfRows = 1;
         Point start = new Point(430, 300);
         double width = 50;
         double height = 20;
@@ -113,7 +119,7 @@ public class Game {
                 Block block = new Block(new Rectangle(
                         new Point(start.getX() + (width * j), start.getY()), width, height, random), br);
                 block.addToGame(this);
-                block.addHitListener(br);
+                this.remainingblocks.increase(1);
             }
             start = new Point(start.getX() - width, start.getY() - height);
             numOfCollums++;
@@ -152,16 +158,19 @@ public class Game {
      * and add them to the game.
      */
     public void initialize() {
-       // PrintingHitListener print = new PrintingHitListener();
-        BlockRemover br = new BlockRemover(this,this.remainingblocks);
+        // PrintingHitListener print = new PrintingHitListener();
+        BlockRemover br = new BlockRemover(this, this.remainingblocks);
+        BallRemover bl = new BallRemover(this, this.remainingballs);
         Ball ball1 = new Ball(new Point(600, 560), 5, Color.MAGENTA);
         Velocity v1 = Velocity.fromAngleAndSpeed(45, 5);
         ball1.setVelocity(v1);
         ball1.addToGame(this);
+        this.remainingballs.increase(1);
         Ball ball2 = new Ball(new Point(650, 560), 5, Color.MAGENTA);
         Velocity v2 = Velocity.fromAngleAndSpeed(45, 5);
         ball2.setVelocity(v2);
         ball2.addToGame(this);
+        this.remainingballs.increase(1);
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
         paddle.getCollisionRectangle().setColor(Color.YELLOW);
         paddle.addToGame(this);
@@ -186,6 +195,11 @@ public class Game {
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {
                 sleeper.sleepFor(milliSecondLeftToSleep);
+            }
+
+            if (this.remainingblocks.getValue() == 0 || this.remainingballs.getValue() == 0) {
+                gui.close();
+                return;
             }
         }
     }

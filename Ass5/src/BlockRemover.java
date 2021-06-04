@@ -22,5 +22,6 @@ public class BlockRemover implements HitListener {
         }
         beingHit.removeHitListener(this);
         beingHit.removeFromGame(game);
+        this.remainingBlocks.decrease(1);
     }
 }

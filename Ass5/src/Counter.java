@@ -12,7 +12,7 @@ public class Counter {
 
     // subtract number from current count.
     void decrease(int number) {
-        counter -= number;
+        counter = counter - number;
     }
 
     // get current count.
