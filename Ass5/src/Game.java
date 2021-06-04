@@ -107,9 +107,9 @@ public class Game {
     /**
      * adds Obstacle Blocks to game.
      */
-    public void addObstacleBlock(BlockRemover br) {
-        int numOfCollums = 1;
-        int numOfRows = 1;
+    public void addObstacleBlock(BlockRemover br, BallRemover bl) {
+        int numOfCollums = 7;
+        int numOfRows = 6;
         Point start = new Point(430, 300);
         double width = 50;
         double height = 20;
@@ -124,13 +124,13 @@ public class Game {
             start = new Point(start.getX() - width, start.getY() - height);
             numOfCollums++;
         }
-        addBorderBlock(br);
+        addBorderBlock(br, bl);
     }
 
     /**
      * adds Border Blocks to game.
      */
-    public void addBorderBlock(BlockRemover br) {
+    public void addBorderBlock(BlockRemover br, BallRemover bl) {
         //add border blocks to GE
         double widthTop = gui.getDrawSurface().getWidth();
         double widthSides = 20;
@@ -141,15 +141,20 @@ public class Game {
         Point three = new Point(780, 20);
         Point four = new Point(0, 20);
         List<Block> blockList = new ArrayList<>();
+        //bottom border
         blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY), br));
+        //left border
         blockList.add(new Block(new Rectangle(four, widthSides, heightSides, Color.GRAY), br));
+        //right border
         blockList.add(new Block(new Rectangle(three, widthSides, heightSides, Color.GRAY), br));
+        //top border
         blockList.add(new Block(new Rectangle(one, widthTop, widthSides, Color.GRAY), br));
-
 
         for (Block x : blockList) {
             x.addToGame(this);
         }
+
+        blockList.get(0).addHitListener(bl);
     }
 
 
@@ -174,7 +179,7 @@ public class Game {
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
         paddle.getCollisionRectangle().setColor(Color.YELLOW);
         paddle.addToGame(this);
-        addObstacleBlock(br);
+        addObstacleBlock(br, bl);
     }
 
     /**

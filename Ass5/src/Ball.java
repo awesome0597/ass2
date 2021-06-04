@@ -237,5 +237,9 @@ public class Ball implements Sprite {
         this.setGameEnvironment(game.getEnvironment());
 
     }
+
+    public void removeFromGame(Game game){
+        game.removeSprite(this);
+    }
 }
 
