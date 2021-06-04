@@ -3,17 +3,17 @@ import biuoop.DrawSurface;
 import java.awt.Color;
 
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 2.0.1
- * date: 13/4/21
+ * @author Adira Weiss.
+ * @version 4.0.1
+ * @since: 04/06/21
  *
  * <p>
  * This class is called to create a ball. The components that make up a ball are a center point (center type Point),
- * a radius (type int), a color (type Color), and a velocity (type Velocity). Velocity can be set through a dx,dy or,
- * through a set variable of type Velocity. You can access the x and y values of the center, the size of the ball
- * (the radius), color and velocity. A ball can be moved one step based on its velocity, and the velocity can be
- * changed in case ball reaches out of bounds of the window its in. The ball can also be drawn on a drawSurface.
+ * a radius (type int), a color (type Color), and a velocity (type Velocity), And its GameEnviroment.
+ * Velocity can be set through a dx,dy or through a set variable of type Velocity. You can access the x and y values of
+ * the center, the size of the ball (the radius), color and velocity. A ball can be moved one step based on its
+ * velocity, and the velocity can be changed in case ball reaches out of bounds of the window its in. The ball can also
+ * be drawn on a drawSurface.
  **/
 
 public class Ball implements Sprite {
@@ -111,20 +111,6 @@ public class Ball implements Sprite {
     public Velocity getVelocity() {
         return this.v;
     }
-
-    /**
-     * method that checks if collision point is one of the corners of the collidable object.
-     *
-     * @param collision type Collision Info
-     * @return type Point
-     */
-//    public boolean collisionPointIsCorner(CollisionInfo collision) {
-//        Rectangle rect = collision.collisionObject().getCollisionRectangle();
-//        return collision.collisionPoint().equals(rect.getUpperRight())
-//                || collision.collisionPoint().equals(rect.getBottomRight())
-//                || collision.collisionPoint().equals(rect.getUpperLeft())
-//                || collision.collisionPoint().equals(rect.getBottomLeft());
-//    }
 
     /**
      * Method that finds the closer corner to the collision point.
@@ -238,6 +224,11 @@ public class Ball implements Sprite {
 
     }
 
+    /**
+     * Removes the Ball from the Game.
+     *
+     * @param game type Game
+     */
     public void removeFromGame(Game game){
         game.removeSprite(this);
     }

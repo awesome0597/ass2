@@ -1,19 +1,19 @@
+//322094111
+
 import biuoop.DrawSurface;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
 
 /**
- * name: Adira Weiss.
- * id: 322094111
- * version 1.0.1
- * date: 22/4/21
+ * @author Adira Weiss.
+ * @version 3.0.1
+ * @since: 04/06/21
  *
  * <p>
- * Class that creates a block implementing the Collidable interface. The Collidable type is a rectangle
- * that can be accessed. There is a method that changes a balls velocity if it is enroute to collide with it.
+ * Class that creates a block implementing the Collidable, Sprite and HitNotifier interface. The Collidable type is a
+ * rectangle that can be accessed. There is a method that changes a balls velocity if it is enroute to collide with it.
  **/
 
 public class Block implements Collidable, Sprite, HitNotifier {
@@ -64,6 +64,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
                 || collisionPoint.getY() == this.rect.getBottomRight().getY();
     }
 
+    /**
+     * Notifies all Neccessary Listeners of the hit.
+     *
+     * @param hitter type Ball
+     */
     private void notifyHit(Ball hitter) {
         // Make a copy of the hitListeners before iterating over them.
         List<HitListener> listeners = new ArrayList<HitListener>(this.hitListeners);
@@ -77,10 +82,12 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * Notify the object that we collided with it at collisionPoint with a given velocity. The return is the new
      * velocity expected after the hit (based on the force the object inflicted on us). If we hit the y axis we change
      * the value of the Dx, if we hit the X axis we change the value of Dy, if both are hit we change the values of both
-     * dx and dy. in case nothing is hit we return the current velocity.
+     * dx and dy. in case nothing is hit we return the current velocity. Notifies Listeners Of hitting object (ball),
+     * and object that was hit (block).
      *
      * @param collisionPoint  type Point
      * @param currentVelocity type Velocity
+     * @param hitter          type Ball
      * @return type Velocity
      */
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
@@ -122,7 +129,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
 
     /**
-     * adds type to list of sprites anf collidables.
+     * adds type to list of sprites and collidables.
      *
      * @param g type Game
      */
@@ -132,6 +139,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
 
     }
 
+    /**
+     * removes type from list of sprites and collidables.
+     *
+     * @param g type Game
+     */
     public void removeFromGame(Game g) {
         g.removeCollidable(this);
         g.removeSprite(this);

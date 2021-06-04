@@ -1,18 +1,32 @@
-// a BlockRemover is in charge of removing blocks from the game, as well as keeping count
-// of the number of blocks that remain.
+//322094111
+
+/**
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 04/06/21
+ * Class that creates a Listener to keep track of the blocks.
+ * <p>
+ * Class that is in charge of removing blocks from the game, as well as keeping count of the number of blocks that
+ * remain.
+ **/
+
 public class BlockRemover implements HitListener {
     private Game game;
     private Counter remainingBlocks;
 
+    /**
+     * constructor.
+     *
+     * @param game type Game
+     * @param removedBlocks type Counter
+     */
     public BlockRemover(Game game, Counter removedBlocks) {
         this.game = game;
         this.remainingBlocks = game.getRemainingblocks();
         this.remainingBlocks.decrease(removedBlocks.getValue());
     }
 
-    // Blocks that are hit should be removed
-    // from the game. Remember to remove this listener from the block
-    // that is being removed from the game.
+    @Override
     public void hitEvent(Block beingHit, Ball hitter) {
         int a = this.game.getEnvironment().getListOfCollidables().size() - 1;
         for (int i = a; i > a - 4; i--) {

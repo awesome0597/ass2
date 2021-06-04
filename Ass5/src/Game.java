@@ -11,8 +11,8 @@ import java.util.Random;
 
 /**
  * @author Adira Weiss.
- * @version 1.0.1
- * @since: 27/4/21
+ * @version 2.0.1
+ * @since: 04/06/21
  * Class that creates a game.
  * <p>
  * Class that creates a game, its members are a game, sprite, GUI and sleeper. It initializes the game, adds all the
@@ -26,6 +26,7 @@ public class Game {
     private Sleeper sleeper;
     private Counter remainingblocks;
     private Counter remainingballs;
+    private Counter score;
 
     /**
      * constructor.
@@ -37,6 +38,7 @@ public class Game {
         this.sleeper = new Sleeper();
         this.remainingblocks = new Counter();
         this.remainingballs = new Counter();
+        this.score = new Counter();
     }
 
     /**
@@ -63,6 +65,10 @@ public class Game {
 
     public Counter getRemainingballs() {
         return this.remainingballs;
+    }
+
+    public Counter getScore() {
+        return this.score;
     }
 
     /**
@@ -107,7 +113,7 @@ public class Game {
     /**
      * adds Obstacle Blocks to game.
      */
-    public void addObstacleBlock(BlockRemover br, BallRemover bl) {
+    public void addObstacleBlock(BlockRemover br, BallRemover bl, ScoreTrackingListener stl) {
         int numOfCollums = 7;
         int numOfRows = 6;
         Point start = new Point(430, 300);
@@ -120,6 +126,7 @@ public class Game {
                         new Point(start.getX() + (width * j), start.getY()), width, height, random), br);
                 block.addToGame(this);
                 this.remainingblocks.increase(1);
+                block.addHitListener(stl);
             }
             start = new Point(start.getX() - width, start.getY() - height);
             numOfCollums++;
@@ -135,11 +142,11 @@ public class Game {
         double widthTop = gui.getDrawSurface().getWidth();
         double widthSides = 20;
         double widthBottom = widthTop - 2 * widthSides;
-        double heightSides = gui.getDrawSurface().getHeight() - widthSides;
-        Point one = new Point(0, 0);
+        double heightSides = gui.getDrawSurface().getHeight() - widthSides - 20;
+        Point one = new Point(0, 20);
         Point two = new Point(20, 580);
-        Point three = new Point(780, 20);
-        Point four = new Point(0, 20);
+        Point three = new Point(780, 40);
+        Point four = new Point(0, 40);
         List<Block> blockList = new ArrayList<>();
         //bottom border
         blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY), br));
@@ -166,6 +173,7 @@ public class Game {
         // PrintingHitListener print = new PrintingHitListener();
         BlockRemover br = new BlockRemover(this, this.remainingblocks);
         BallRemover bl = new BallRemover(this, this.remainingballs);
+        ScoreTrackingListener stl = new ScoreTrackingListener(this.score);
         Ball ball1 = new Ball(new Point(600, 560), 5, Color.MAGENTA);
         Velocity v1 = Velocity.fromAngleAndSpeed(45, 5);
         ball1.setVelocity(v1);
@@ -179,7 +187,9 @@ public class Game {
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
         paddle.getCollisionRectangle().setColor(Color.YELLOW);
         paddle.addToGame(this);
-        addObstacleBlock(br, bl);
+        addObstacleBlock(br, bl, stl);
+        ScoreIndicator si = new ScoreIndicator(this.score);
+        si.addToGame(this);
     }
 
     /**
@@ -203,6 +213,9 @@ public class Game {
             }
 
             if (this.remainingblocks.getValue() == 0 || this.remainingballs.getValue() == 0) {
+                if (this.remainingblocks.getValue() == 0) {
+                    this.score.increase(100);
+                }
                 gui.close();
                 return;
             }
