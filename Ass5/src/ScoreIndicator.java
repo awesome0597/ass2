@@ -26,6 +26,11 @@ public class ScoreIndicator implements Sprite {
         this.score = s;
     }
 
+    /**
+     * adds this sprite to game.
+     *
+     * @param game type Game
+     */
     public void addToGame(Game game) {
         game.addSprite(this);
 

@@ -19,16 +19,20 @@ import java.awt.Color;
 public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle rect;
     private List<HitListener> hitListeners;
+    private Boolean hasBorder;
 
     /**
      * constructor.
      *
-     * @param rect type Rectangle.
+     * @param rect      type Rectangle
+     * @param br        type BlockRemover
+     * @param hasBorder type Boolean
      */
-    public Block(Rectangle rect, BlockRemover br) {
+    public Block(Rectangle rect, BlockRemover br, Boolean hasBorder) {
         this.rect = rect;
         this.hitListeners = new ArrayList<HitListener>();
         this.hitListeners.add(br);
+        this.hasBorder = hasBorder;
     }
 
 
@@ -116,9 +120,12 @@ public class Block implements Collidable, Sprite, HitNotifier {
         d.setColor(this.rect.getColor());
         d.fillRectangle((int) this.rect.getUpperLeft().getX(), (int) this.rect.getUpperLeft().getY(),
                 (int) this.rect.getWidth(), (int) this.rect.getHeight());
-        d.setColor(Color.BLACK);
-        d.drawRectangle((int) this.rect.getUpperLeft().getX(), (int) this.rect.getUpperLeft().getY(),
-                (int) this.rect.getWidth(), (int) this.rect.getHeight());
+        if (this.hasBorder) {
+            d.setColor(Color.BLACK);
+            d.drawRectangle((int) this.rect.getUpperLeft().getX(), (int) this.rect.getUpperLeft().getY(),
+                    (int) this.rect.getWidth(), (int) this.rect.getHeight());
+        }
+
     }
 
     /**

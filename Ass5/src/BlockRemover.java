@@ -17,7 +17,7 @@ public class BlockRemover implements HitListener {
     /**
      * constructor.
      *
-     * @param game type Game
+     * @param game          type Game
      * @param removedBlocks type Counter
      */
     public BlockRemover(Game game, Counter removedBlocks) {

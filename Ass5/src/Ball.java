@@ -189,7 +189,7 @@ public class Ball implements Sprite {
             this.center = this.getVelocity().applyToPoint(this.center);
         }
         if (isInCollidable(this)) {
-            this.center = new Point(35, 35);
+            this.center = new Point(650, 555);
         }
     }
 
@@ -229,7 +229,7 @@ public class Ball implements Sprite {
      *
      * @param game type Game
      */
-    public void removeFromGame(Game game){
+    public void removeFromGame(Game game) {
         game.removeSprite(this);
     }
 }

@@ -15,7 +15,7 @@ public class ScoreTrackingListener implements HitListener {
     /**
      * constructor.
      *
-     * @param scoreCounter
+     * @param scoreCounter type Counter
      */
     public ScoreTrackingListener(Counter scoreCounter) {
         this.currentScore = scoreCounter;

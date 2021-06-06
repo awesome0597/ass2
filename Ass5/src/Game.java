@@ -59,14 +59,29 @@ public class Game {
         return this.sprites;
     }
 
+    /**
+     * accessor.
+     *
+     * @return type Counter
+     */
     public Counter getRemainingblocks() {
         return this.remainingblocks;
     }
 
+    /**
+     * accessor.
+     *
+     * @return type Counter
+     */
     public Counter getRemainingballs() {
         return this.remainingballs;
     }
 
+    /**
+     * accessor.
+     *
+     * @return type Counter
+     */
     public Counter getScore() {
         return this.score;
     }
@@ -89,10 +104,20 @@ public class Game {
         this.sprites.addSprite(s);
     }
 
+    /**
+     * Removes Collidable from game environment.
+     *
+     * @param c type Collidable
+     */
     public void removeCollidable(Collidable c) {
         this.environment.getListOfCollidables().remove(c);
     }
 
+    /**
+     * Removes Sprite from list of sprites in game.
+     *
+     * @param s type Sprite
+     */
     public void removeSprite(Sprite s) {
         this.sprites.getListOfSprites().remove(s);
     }
@@ -112,6 +137,10 @@ public class Game {
 
     /**
      * adds Obstacle Blocks to game.
+     *
+     * @param br  type BlockRemover
+     * @param bl  type BallRemover
+     * @param stl type ScoreTrackingListener
      */
     public void addObstacleBlock(BlockRemover br, BallRemover bl, ScoreTrackingListener stl) {
         int numOfCollums = 7;
@@ -123,7 +152,7 @@ public class Game {
             Color random = getRandomColor();
             for (int j = 0; j < numOfCollums; j++) {
                 Block block = new Block(new Rectangle(
-                        new Point(start.getX() + (width * j), start.getY()), width, height, random), br);
+                        new Point(start.getX() + (width * j), start.getY()), width, height, random), br, true);
                 block.addToGame(this);
                 this.remainingblocks.increase(1);
                 block.addHitListener(stl);
@@ -136,6 +165,9 @@ public class Game {
 
     /**
      * adds Border Blocks to game.
+     *
+     * @param br type BlockRemover
+     * @param bl type BallRemover
      */
     public void addBorderBlock(BlockRemover br, BallRemover bl) {
         //add border blocks to GE
@@ -144,18 +176,18 @@ public class Game {
         double widthBottom = widthTop - 2 * widthSides;
         double heightSides = gui.getDrawSurface().getHeight() - widthSides - 20;
         Point one = new Point(0, 20);
-        Point two = new Point(20, 580);
+        Point two = new Point(20, 600);
         Point three = new Point(780, 40);
         Point four = new Point(0, 40);
         List<Block> blockList = new ArrayList<>();
-        //bottom border
-        blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY), br));
+        //death region
+        blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY), br, false));
         //left border
-        blockList.add(new Block(new Rectangle(four, widthSides, heightSides, Color.GRAY), br));
+        blockList.add(new Block(new Rectangle(four, widthSides, heightSides, Color.GRAY), br, false));
         //right border
-        blockList.add(new Block(new Rectangle(three, widthSides, heightSides, Color.GRAY), br));
+        blockList.add(new Block(new Rectangle(three, widthSides, heightSides, Color.GRAY), br, false));
         //top border
-        blockList.add(new Block(new Rectangle(one, widthTop, widthSides, Color.GRAY), br));
+        blockList.add(new Block(new Rectangle(one, widthTop, widthSides, Color.GRAY), br, false));
 
         for (Block x : blockList) {
             x.addToGame(this);
@@ -164,26 +196,35 @@ public class Game {
         blockList.get(0).addHitListener(bl);
     }
 
+    /**
+     * adds Balls to game.
+     */
+    public void addBalls() {
+        Ball ball1 = new Ball(new Point(600, 560), 5, Color.MAGENTA);
+        Velocity v1 = Velocity.fromAngleAndSpeed(45, 5);
+        ball1.setVelocity(v1);
+        ball1.addToGame(this);
+        this.remainingballs.increase(1);
+        Ball ball2 = new Ball(new Point(650, 555), 5, Color.MAGENTA);
+        Velocity v2 = Velocity.fromAngleAndSpeed(45, 4);
+        ball2.setVelocity(v2);
+        ball2.addToGame(this);
+        this.remainingballs.increase(1);
+        Ball ball3 = new Ball(new Point(600, 550), 5, Color.MAGENTA);
+        ball3.setVelocity(v1);
+        ball3.addToGame(this);
+        this.remainingballs.increase(1);
+    }
 
     /**
      * Initialize a new game: create the Blocks and Ball (and Paddle)
      * and add them to the game.
      */
     public void initialize() {
-        // PrintingHitListener print = new PrintingHitListener();
         BlockRemover br = new BlockRemover(this, this.remainingblocks);
         BallRemover bl = new BallRemover(this, this.remainingballs);
         ScoreTrackingListener stl = new ScoreTrackingListener(this.score);
-        Ball ball1 = new Ball(new Point(600, 560), 5, Color.MAGENTA);
-        Velocity v1 = Velocity.fromAngleAndSpeed(45, 5);
-        ball1.setVelocity(v1);
-        ball1.addToGame(this);
-        this.remainingballs.increase(1);
-        Ball ball2 = new Ball(new Point(650, 560), 5, Color.MAGENTA);
-        Velocity v2 = Velocity.fromAngleAndSpeed(45, 5);
-        ball2.setVelocity(v2);
-        ball2.addToGame(this);
-        this.remainingballs.increase(1);
+        addBalls();
         Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
         paddle.getCollisionRectangle().setColor(Color.YELLOW);
         paddle.addToGame(this);
@@ -221,11 +262,5 @@ public class Game {
             }
         }
     }
-
-    /**
-     * main, creates a new game and calls initialize and run methods.
-     *
-     * @param args not received
-     */
 
 }

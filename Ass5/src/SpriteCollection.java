@@ -25,6 +25,11 @@ public class SpriteCollection {
         this.listOfSprites = new ArrayList<Sprite>();
     }
 
+    /**
+     * accessor.
+     *
+     * @return type List<Sprite>
+     */
     public List<Sprite> getListOfSprites() {
         return this.listOfSprites;
     }

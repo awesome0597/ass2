@@ -96,6 +96,7 @@ public class Paddle implements Sprite, Collidable {
     /**
      * changes the velocity of the ball based on the area of the paddle that is hit.
      *
+     * @param hitter          type Ball
      * @param collisionPoint  point of collision with the paddle
      * @param currentVelocity current velocity of the moving ball
      * @return type Velocity
