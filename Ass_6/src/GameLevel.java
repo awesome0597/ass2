@@ -35,6 +35,11 @@ public class GameLevel implements Animation {
 
     /**
      * constructor.
+     *
+     * @param levelInformation type LevelInformation
+     * @param ks               type KeyboardSensor
+     * @param ar               type AnimationRunner
+     * @param g                type GUI
      */
     public GameLevel(LevelInformation levelInformation, KeyboardSensor ks, AnimationRunner ar, GUI g) {
         this.sprites = new SpriteCollection();
@@ -95,6 +100,11 @@ public class GameLevel implements Animation {
         return this.score;
     }
 
+    /**
+     * accessor.
+     *
+     * @return type AnimationRunner
+     */
     public AnimationRunner getRunner() {
         return runner;
     }
@@ -191,20 +201,6 @@ public class GameLevel implements Animation {
      * adds Balls to game.
      */
     public void addBalls() {
-//        Ball ball1 = new Ball(new Point(600, 560), 5, Color.MAGENTA);
-//        Velocity v1 = Velocity.fromAngleAndSpeed(45, 5);
-//        ball1.setVelocity(v1);
-//        ball1.addToGame(this);
-//        this.remainingballs.increase(1);
-//        Ball ball2 = new Ball(new Point(650, 555), 5, Color.MAGENTA);
-//        Velocity v2 = Velocity.fromAngleAndSpeed(45, 4);
-//        ball2.setVelocity(v2);
-//        ball2.addToGame(this);
-//        this.remainingballs.increase(1);
-//        Ball ball3 = new Ball(new Point(600, 550), 5, Color.MAGENTA);
-//        ball3.setVelocity(v1);
-//        ball3.addToGame(this);
-//        this.remainingballs.increase(1);
 
         for (Velocity x : this.levelInformation.initialBallVelocities()) {
             Ball ball = new Ball(new Point(400, 545), 6, Color.MAGENTA);
@@ -214,7 +210,10 @@ public class GameLevel implements Animation {
 
     }
 
-    public void addPaddle(){
+    /**
+     * adds Paddle to game.
+     */
+    public void addPaddle() {
         double pWidth = this.levelInformation.paddleWidth();
         Paddle paddle = new Paddle(new Rectangle(new Point(400 - (pWidth / 2), 560),
                 pWidth, 20), this.gui, this.levelInformation.paddleSpeed());
@@ -256,7 +255,7 @@ public class GameLevel implements Animation {
         this.sprites.notifyAllTimePassed();
 
         if (this.keyboard.isPressed("p")) {
-            this.runner.run(new KeyPressStoppableAnimation(this.keyboard, "space" ,new PauseScreen()));
+            this.runner.run(new KeyPressStoppableAnimation(this.keyboard, "space", new PauseScreen()));
         }
 
         if (this.remainingblocks.getValue() == 0 || this.remainingballs.getValue() == 0) {

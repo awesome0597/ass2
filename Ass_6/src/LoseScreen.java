@@ -1,10 +1,25 @@
+//322094111
+
 import biuoop.DrawSurface;
 
+/**
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 17/06/21
+ * Class that creates a game.
+ * <p>
+ * Draws the Lose Screen
+ **/
 
 public class LoseScreen implements Animation {
     private boolean stop;
     private int score;
 
+    /**
+     * constructor.
+     *
+     * @param s type String
+     */
     public LoseScreen(int s) {
         this.stop = false;
         this.score = s;

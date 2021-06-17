@@ -1,11 +1,26 @@
+//322094111
+
 import biuoop.DrawSurface;
-import biuoop.KeyboardSensor;
+
+/**
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 17/06/21
+ * Class that creates a game.
+ * <p>
+ * animation for the win screen
+ **/
 
 public class WinScreen implements Animation {
 
     private boolean stop;
     private int score;
 
+    /**
+     * constructor.
+     *
+     * @param s type int
+     */
     public WinScreen(int s) {
 
         this.stop = false;

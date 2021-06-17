@@ -1,6 +1,17 @@
-import java.awt.*;
+//322094111
+
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 17/06/21
+ * Class that creates a game.
+ * <p>
+ * Second level in game
+ **/
 
 public class WideEasy implements LevelInformation {
     @Override

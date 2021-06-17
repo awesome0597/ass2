@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 17/06/21
+ * Class that creates a game.
+ * <p>
+ * second level in game
+ **/
 public class FinalFour implements LevelInformation {
     @Override
     public int numberOfBalls() {

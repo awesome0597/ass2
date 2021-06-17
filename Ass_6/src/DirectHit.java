@@ -4,6 +4,15 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 17/06/21
+ * Class that creates a game.
+ * <p>
+ * first level in game
+ **/
+
 public class DirectHit implements LevelInformation {
 
     @Override
@@ -42,7 +51,7 @@ public class DirectHit implements LevelInformation {
     @Override
     public List<Block> blocks() {
         List<Block> blockList = new ArrayList<>();
-        blockList.add(new Block(new Rectangle(new Point(375,200),50,30,Color.RED),true));
+        blockList.add(new Block(new Rectangle(new Point(375, 200), 50, 30, Color.RED), true));
         return blockList;
     }
 

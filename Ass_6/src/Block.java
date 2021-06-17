@@ -35,7 +35,13 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.hasBorder = hasBorder;
     }
 
-    public Block (Rectangle rect,Boolean hasBorder){
+    /**
+     * constructor.
+     *
+     * @param rect      type Rectangle
+     * @param hasBorder type Boolean
+     */
+    public Block(Rectangle rect, Boolean hasBorder) {
         this.rect = rect;
         this.hasBorder = hasBorder;
         this.hitListeners = new ArrayList<>();

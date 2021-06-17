@@ -1,9 +1,20 @@
+//322094111
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Green3 implements LevelInformation{
+/**
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 17/06/21
+ * Class that creates a game.
+ * <p>
+ * Fourth level in game
+ **/
+
+public class Green3 implements LevelInformation {
     @Override
     public int numberOfBalls() {
         return 2;
@@ -13,7 +24,7 @@ public class Green3 implements LevelInformation{
     public List<Velocity> initialBallVelocities() {
         List<Velocity> ballVelocities = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            Velocity v = Velocity.fromAngleAndSpeed(315+(i*90), 5);
+            Velocity v = Velocity.fromAngleAndSpeed(315 + (i * 90), 5);
             ballVelocities.add(v);
         }
         return ballVelocities;
@@ -55,7 +66,7 @@ public class Green3 implements LevelInformation{
     @Override
     public List<Block> blocks() {
         List<Block> blockList = new ArrayList<>();
-                int numOfCollums = 7;
+        int numOfCollums = 7;
         int numOfRows = 6;
         Point start = new Point(429, 300);
         double width = 50;

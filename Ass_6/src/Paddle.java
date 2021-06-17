@@ -21,18 +21,19 @@ import java.awt.Color;
 public class Paddle implements Sprite, Collidable {
     private biuoop.KeyboardSensor keyboard;
     private Rectangle rect;
-    private int speed;
+    private int speeed;
 
     /**
      * constructor.
      *
      * @param rect type Rectangle
      * @param gui  type GUI
+     * @param s    type int
      */
-    public Paddle(Rectangle rect, GUI gui, int speed) {
+    public Paddle(Rectangle rect, GUI gui, int s) {
         this.rect = rect;
         this.keyboard = gui.getKeyboardSensor();
-        this.speed = speed;
+        this.speeed = s;
 
     }
 
@@ -40,8 +41,9 @@ public class Paddle implements Sprite, Collidable {
      * Changes the upper left corner of rectangle to make it look like the paddle is moving left.
      */
     public void moveLeft() {
-        if (this.rect.getUpperLeft().getX() - speed > 20) {
-            this.rect.setUpperLeft(new Point(this.rect.getUpperLeft().getX() - speed, this.rect.getUpperLeft().getY()));
+        if (this.rect.getUpperLeft().getX() - speeed > 20) {
+            this.rect.setUpperLeft(
+                    new Point(this.rect.getUpperLeft().getX() - speeed, this.rect.getUpperLeft().getY()));
         } else {
             this.rect.setUpperLeft(new Point(20, this.rect.getUpperLeft().getY()));
         }
@@ -53,8 +55,9 @@ public class Paddle implements Sprite, Collidable {
      * Changes the upper left corner of rectangle to make it look like the paddle is moving right.
      */
     public void moveRight() {
-        if (this.rect.getUpperRight().getX() + speed < 780) {
-            this.rect.setUpperLeft(new Point(this.rect.getUpperLeft().getX() + speed, this.rect.getUpperLeft().getY()));
+        if (this.rect.getUpperRight().getX() + speeed < 780) {
+            this.rect.setUpperLeft(
+                    new Point(this.rect.getUpperLeft().getX() + speeed, this.rect.getUpperLeft().getY()));
         } else {
             this.rect.setUpperLeft(new Point(780 - this.rect.getWidth(), this.rect.getUpperLeft().getY()));
         }

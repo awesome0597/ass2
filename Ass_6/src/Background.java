@@ -4,12 +4,21 @@ import biuoop.DrawSurface;
 
 import java.awt.Color;
 
+/**
+ * @author Adira Weiss.
+ * @version 4.0.1
+ * @since: 17/06/21
+ *
+ * <p>
+ * class that creates a background for every level
+ **/
+
 public class Background implements Sprite {
     private Rectangle rect1;
     private Rectangle rect2;
 
     /**
-     * constructor
+     * constructor.
      *
      * @param color type color
      */
@@ -19,7 +28,7 @@ public class Background implements Sprite {
     }
 
     /**
-     * accessor
+     * accessor.
      *
      * @return type rectangle
      */
@@ -27,6 +36,11 @@ public class Background implements Sprite {
         return this.rect1;
     }
 
+    /**
+     * accessor.
+     *
+     * @return type rectangle
+     */
     public Rectangle getRect2() {
         return this.rect2;
     }

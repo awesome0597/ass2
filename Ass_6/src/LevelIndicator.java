@@ -4,11 +4,27 @@ import biuoop.DrawSurface;
 
 import java.awt.Color;
 
-public class LevelIndicator implements Sprite{
+/**
+ * @author Adira Weiss.
+ * @version 1.0.1
+ * @since: 17/06/21
+ * Class that creates a game.
+ * <p>
+ * draws level name on top right of screen
+ **/
+
+public class LevelIndicator implements Sprite {
     private String levelName;
-    public LevelIndicator (String s){
+
+    /**
+     * constructor.
+     *
+     * @param s type string
+     */
+    public LevelIndicator(String s) {
         this.levelName = s;
     }
+
     @Override
     public void drawOn(DrawSurface d) {
         d.setColor(Color.black);
