@@ -57,8 +57,8 @@ public class Green3 implements LevelInformation{
         List<Block> blockList = new ArrayList<>();
                 int numOfCollums = 7;
         int numOfRows = 6;
-        Point start = new Point(430, 300);
-        double width = 50.25;
+        Point start = new Point(429, 300);
+        double width = 50;
         double height = 20;
         for (int i = 0; i < numOfRows; i++) {
             Color random = getRandomColor();

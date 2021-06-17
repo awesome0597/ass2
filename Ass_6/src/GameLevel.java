@@ -8,7 +8,7 @@ import biuoop.Sleeper;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 
 /**
  * @author Adira Weiss.
@@ -36,16 +36,16 @@ public class GameLevel implements Animation {
     /**
      * constructor.
      */
-    public GameLevel(LevelInformation levelInformation) {
+    public GameLevel(LevelInformation levelInformation, KeyboardSensor ks, AnimationRunner ar, GUI g) {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
-        this.gui = new GUI("blah blah blah, joke joke joke, commentary.", 800, 600);
+        this.gui = g;
         this.sleeper = new Sleeper();
         this.remainingblocks = new Counter();
         this.remainingballs = new Counter();
         this.score = new Counter();
-        this.keyboard = this.gui.getKeyboardSensor();
-        this.runner = new AnimationRunner(gui);
+        this.keyboard = ks;
+        this.runner = ar;
         this.running = true;
         this.levelInformation = levelInformation;
     }
@@ -93,6 +93,10 @@ public class GameLevel implements Animation {
      */
     public Counter getScore() {
         return this.score;
+    }
+
+    public AnimationRunner getRunner() {
+        return runner;
     }
 
     /**
@@ -207,7 +211,7 @@ public class GameLevel implements Animation {
             ball.setVelocity(x);
             ball.addToGame(this);
         }
-        this.remainingballs.increase(this.levelInformation.numberOfBalls());
+
     }
 
     public void addPaddle(){
@@ -237,6 +241,8 @@ public class GameLevel implements Animation {
         addObstacleBlock(br, bl, stl);
         ScoreIndicator si = new ScoreIndicator(this.score);
         si.addToGame(this);
+        this.remainingballs.increase(this.levelInformation.numberOfBalls());
+
     }
 
     @Override
@@ -250,14 +256,13 @@ public class GameLevel implements Animation {
         this.sprites.notifyAllTimePassed();
 
         if (this.keyboard.isPressed("p")) {
-            this.runner.run(new PauseScreen(this.keyboard));
+            this.runner.run(new KeyPressStoppableAnimation(this.keyboard, "space" ,new PauseScreen()));
         }
 
         if (this.remainingblocks.getValue() == 0 || this.remainingballs.getValue() == 0) {
             if (this.remainingblocks.getValue() == 0) {
                 this.score.increase(100);
             }
-            gui.close();
             this.running = false;
         }
 
