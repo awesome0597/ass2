@@ -30,9 +30,15 @@ public class Block implements Collidable, Sprite, HitNotifier {
      */
     public Block(Rectangle rect, BlockRemover br, Boolean hasBorder) {
         this.rect = rect;
-        this.hitListeners = new ArrayList<HitListener>();
+        this.hitListeners = new ArrayList<>();
         this.hitListeners.add(br);
         this.hasBorder = hasBorder;
+    }
+
+    public Block (Rectangle rect,Boolean hasBorder){
+        this.rect = rect;
+        this.hasBorder = hasBorder;
+        this.hitListeners = new ArrayList<>();
     }
 
 

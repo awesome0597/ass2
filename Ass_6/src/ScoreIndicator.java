@@ -16,6 +16,7 @@ import java.awt.Color;
 
 public class ScoreIndicator implements Sprite {
     private Counter score;
+    private Rectangle rect;
 
     /**
      * constructor.
@@ -38,9 +39,10 @@ public class ScoreIndicator implements Sprite {
 
     @Override
     public void drawOn(DrawSurface d) {
+
         d.setColor(Color.black);
         d.drawText(350, 15,
-                "score:" + score.getValue(), 15);
+                "Score: " + score.getValue(), 15);
     }
 
     @Override

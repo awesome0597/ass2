@@ -31,12 +31,12 @@ public class GameLevel implements Animation {
     private Counter remainingblocks;
     private Counter remainingballs;
     private Counter score;
+    private LevelInformation levelInformation;
 
     /**
      * constructor.
      */
-    public GameLevel() {
-
+    public GameLevel(LevelInformation levelInformation) {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.gui = new GUI("blah blah blah, joke joke joke, commentary.", 800, 600);
@@ -47,6 +47,7 @@ public class GameLevel implements Animation {
         this.keyboard = this.gui.getKeyboardSensor();
         this.runner = new AnimationRunner(gui);
         this.running = true;
+        this.levelInformation = levelInformation;
     }
 
     /**
@@ -130,18 +131,6 @@ public class GameLevel implements Animation {
         this.sprites.getListOfSprites().remove(s);
     }
 
-    /**
-     * random color generator.
-     *
-     * @return type Color
-     */
-    private static Color getRandomColor() {
-        Random rand = new Random();
-        float r = rand.nextFloat();
-        float g = rand.nextFloat();
-        float b = rand.nextFloat();
-        return (new Color(r, g, b));
-    }
 
     /**
      * adds Obstacle Blocks to game.
@@ -151,23 +140,13 @@ public class GameLevel implements Animation {
      * @param stl type ScoreTrackingListener
      */
     public void addObstacleBlock(BlockRemover br, BallRemover bl, ScoreTrackingListener stl) {
-        int numOfCollums = 7;
-        int numOfRows = 6;
-        Point start = new Point(430, 300);
-        double width = 50;
-        double height = 20;
-        for (int i = 0; i < numOfRows; i++) {
-            Color random = getRandomColor();
-            for (int j = 0; j < numOfCollums; j++) {
-                Block block = new Block(new Rectangle(
-                        new Point(start.getX() + (width * j), start.getY()), width, height, random), br, true);
-                block.addToGame(this);
-                this.remainingblocks.increase(1);
-                block.addHitListener(stl);
-            }
-            start = new Point(start.getX() - width, start.getY() - height);
-            numOfCollums++;
+
+        for (Block x : this.levelInformation.blocks()) {
+            x.addToGame(this);
+            x.addHitListener(br);
+            x.addHitListener(stl);
         }
+        this.remainingblocks.increase(this.levelInformation.numberOfBlocksToRemove());
         addBorderBlock(br, bl);
     }
 
@@ -180,13 +159,13 @@ public class GameLevel implements Animation {
     public void addBorderBlock(BlockRemover br, BallRemover bl) {
         //add border blocks to GE
         double widthTop = gui.getDrawSurface().getWidth();
-        double widthSides = 20;
+        double widthSides = 25;
         double widthBottom = widthTop - 2 * widthSides;
         double heightSides = gui.getDrawSurface().getHeight() - widthSides - 20;
         Point one = new Point(0, 20);
         Point two = new Point(20, 600);
-        Point three = new Point(780, 40);
-        Point four = new Point(0, 40);
+        Point three = new Point(780, 45);
+        Point four = new Point(0, 45);
         List<Block> blockList = new ArrayList<>();
         //death region
         blockList.add(new Block(new Rectangle(two, widthBottom, widthSides, Color.GRAY), br, false));
@@ -208,20 +187,35 @@ public class GameLevel implements Animation {
      * adds Balls to game.
      */
     public void addBalls() {
-        Ball ball1 = new Ball(new Point(600, 560), 5, Color.MAGENTA);
-        Velocity v1 = Velocity.fromAngleAndSpeed(45, 5);
-        ball1.setVelocity(v1);
-        ball1.addToGame(this);
-        this.remainingballs.increase(1);
-        Ball ball2 = new Ball(new Point(650, 555), 5, Color.MAGENTA);
-        Velocity v2 = Velocity.fromAngleAndSpeed(45, 4);
-        ball2.setVelocity(v2);
-        ball2.addToGame(this);
-        this.remainingballs.increase(1);
-        Ball ball3 = new Ball(new Point(600, 550), 5, Color.MAGENTA);
-        ball3.setVelocity(v1);
-        ball3.addToGame(this);
-        this.remainingballs.increase(1);
+//        Ball ball1 = new Ball(new Point(600, 560), 5, Color.MAGENTA);
+//        Velocity v1 = Velocity.fromAngleAndSpeed(45, 5);
+//        ball1.setVelocity(v1);
+//        ball1.addToGame(this);
+//        this.remainingballs.increase(1);
+//        Ball ball2 = new Ball(new Point(650, 555), 5, Color.MAGENTA);
+//        Velocity v2 = Velocity.fromAngleAndSpeed(45, 4);
+//        ball2.setVelocity(v2);
+//        ball2.addToGame(this);
+//        this.remainingballs.increase(1);
+//        Ball ball3 = new Ball(new Point(600, 550), 5, Color.MAGENTA);
+//        ball3.setVelocity(v1);
+//        ball3.addToGame(this);
+//        this.remainingballs.increase(1);
+
+        for (Velocity x : this.levelInformation.initialBallVelocities()) {
+            Ball ball = new Ball(new Point(400, 545), 6, Color.MAGENTA);
+            ball.setVelocity(x);
+            ball.addToGame(this);
+        }
+        this.remainingballs.increase(this.levelInformation.numberOfBalls());
+    }
+
+    public void addPaddle(){
+        double pWidth = this.levelInformation.paddleWidth();
+        Paddle paddle = new Paddle(new Rectangle(new Point(400 - (pWidth / 2), 560),
+                pWidth, 20), this.gui, this.levelInformation.paddleSpeed());
+        paddle.getCollisionRectangle().setColor(Color.YELLOW);
+        paddle.addToGame(this);
     }
 
     /**
@@ -232,10 +226,14 @@ public class GameLevel implements Animation {
         BlockRemover br = new BlockRemover(this, this.remainingblocks);
         BallRemover bl = new BallRemover(this, this.remainingballs);
         ScoreTrackingListener stl = new ScoreTrackingListener(this.score);
-        // addBalls();
-        Paddle paddle = new Paddle(new Rectangle(new Point(335, 560), 130, 20), this.gui);
-        paddle.getCollisionRectangle().setColor(Color.YELLOW);
-        paddle.addToGame(this);
+        //add background
+        this.sprites.addSprite(this.levelInformation.getBackground());
+        //add level indicator
+        LevelIndicator li = new LevelIndicator(this.levelInformation.levelName());
+        this.sprites.addSprite(li);
+        //create and add paddle
+        addPaddle();
+        //adds all blocks to game obstacle and border.
         addObstacleBlock(br, bl, stl);
         ScoreIndicator si = new ScoreIndicator(this.score);
         si.addToGame(this);

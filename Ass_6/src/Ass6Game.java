@@ -10,7 +10,7 @@ public class Ass6Game {
      * @param args not received for this main
      */
     public static void main(String[] args) {
-        GameLevel gameLevel = new GameLevel();
+        GameLevel gameLevel = new GameLevel(new FinalFour());
         gameLevel.initialize();
         gameLevel.run();
 

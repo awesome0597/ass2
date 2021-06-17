@@ -21,6 +21,7 @@ import java.awt.Color;
 public class Paddle implements Sprite, Collidable {
     private biuoop.KeyboardSensor keyboard;
     private Rectangle rect;
+    private int speed;
 
     /**
      * constructor.
@@ -28,9 +29,10 @@ public class Paddle implements Sprite, Collidable {
      * @param rect type Rectangle
      * @param gui  type GUI
      */
-    public Paddle(Rectangle rect, GUI gui) {
+    public Paddle(Rectangle rect, GUI gui, int speed) {
         this.rect = rect;
         this.keyboard = gui.getKeyboardSensor();
+        this.speed = speed;
 
     }
 
@@ -38,8 +40,8 @@ public class Paddle implements Sprite, Collidable {
      * Changes the upper left corner of rectangle to make it look like the paddle is moving left.
      */
     public void moveLeft() {
-        if (this.rect.getUpperLeft().getX() - 5 > 20) {
-            this.rect.setUpperLeft(new Point(this.rect.getUpperLeft().getX() - 5, this.rect.getUpperLeft().getY()));
+        if (this.rect.getUpperLeft().getX() - speed > 20) {
+            this.rect.setUpperLeft(new Point(this.rect.getUpperLeft().getX() - speed, this.rect.getUpperLeft().getY()));
         } else {
             this.rect.setUpperLeft(new Point(20, this.rect.getUpperLeft().getY()));
         }
@@ -51,8 +53,8 @@ public class Paddle implements Sprite, Collidable {
      * Changes the upper left corner of rectangle to make it look like the paddle is moving right.
      */
     public void moveRight() {
-        if (this.rect.getUpperRight().getX() + 5 < 780) {
-            this.rect.setUpperLeft(new Point(this.rect.getUpperLeft().getX() + 5, this.rect.getUpperLeft().getY()));
+        if (this.rect.getUpperRight().getX() + speed < 780) {
+            this.rect.setUpperLeft(new Point(this.rect.getUpperLeft().getX() + speed, this.rect.getUpperLeft().getY()));
         } else {
             this.rect.setUpperLeft(new Point(780 - this.rect.getWidth(), this.rect.getUpperLeft().getY()));
         }
