@@ -3,7 +3,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author Adira Weiss.
@@ -47,7 +46,7 @@ public class Green3 implements LevelInformation {
 
     @Override
     public Sprite getBackground() {
-        return new Background(Color.GREEN);
+        return new Background(new Color(153,255,153));
     }
 
     /**
@@ -55,13 +54,6 @@ public class Green3 implements LevelInformation {
      *
      * @return type Color
      */
-    private static Color getRandomColor() {
-        Random rand = new Random();
-        float r = rand.nextFloat();
-        float g = rand.nextFloat();
-        float b = rand.nextFloat();
-        return (new Color(r, g, b));
-    }
 
     @Override
     public List<Block> blocks() {
@@ -72,10 +64,10 @@ public class Green3 implements LevelInformation {
         double width = 50;
         double height = 20;
         for (int i = 0; i < numOfRows; i++) {
-            Color random = getRandomColor();
+            Color color = new Color(0, 36 * (i + 1), 0);
             for (int j = 0; j < numOfCollums; j++) {
                 Block block = new Block(new Rectangle(
-                        new Point(start.getX() + (width * j), start.getY()), width, height, random), true);
+                        new Point(start.getX() + (width * j), start.getY()), width, height, color), true);
                 blockList.add(block);
             }
             start = new Point(start.getX() - width, start.getY() - height);

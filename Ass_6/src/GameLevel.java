@@ -203,7 +203,7 @@ public class GameLevel implements Animation {
     public void addBalls() {
 
         for (Velocity x : this.levelInformation.initialBallVelocities()) {
-            Ball ball = new Ball(new Point(400, 545), 6, Color.MAGENTA);
+            Ball ball = new Ball(new Point(400, 545), 6, Color.WHITE);
             ball.setVelocity(x);
             ball.addToGame(this);
         }

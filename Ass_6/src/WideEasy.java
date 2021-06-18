@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * @author Adira Weiss.
  * @version 1.0.1
@@ -46,15 +47,16 @@ public class WideEasy implements LevelInformation {
 
     @Override
     public Sprite getBackground() {
-        return new Background(Color.WHITE);
+        return new Background(new Color(238, 232, 170));
     }
 
     @Override
     public List<Block> blocks() {
         List<Block> blockList = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
+            Color color = new Color(17 * (i + 1), 0, 0);
             blockList.add(new Block(
-                    new Rectangle(new Point(25 + i * 50.25, 200), 51, 20, Color.RED), true));
+                    new Rectangle(new Point(25 + i * 50.25, 200), 51, 20, color), true));
         }
 
         return blockList;

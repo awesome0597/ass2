@@ -3,7 +3,7 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 
 /**
  * @author Adira Weiss.
@@ -49,18 +49,6 @@ public class FinalFour implements LevelInformation {
         return new Background(Color.CYAN);
     }
 
-    /**
-     * random color generator.
-     *
-     * @return type Color
-     */
-    private static Color getRandomColor() {
-        Random rand = new Random();
-        float r = rand.nextFloat();
-        float g = rand.nextFloat();
-        float b = rand.nextFloat();
-        return (new Color(r, g, b));
-    }
 
     @Override
     public List<Block> blocks() {
@@ -71,11 +59,11 @@ public class FinalFour implements LevelInformation {
         double width = 50.25;
         double height = 20;
         for (int i = 0; i < numOfRows; i++) {
-            Color random = getRandomColor();
+            Color color = new Color(0, 0, 36 * (i + 1));
             for (int j = 0; j < numOfCollums; j++) {
                 blockList.add(new Block(
                         new Rectangle(new Point(start.getX() + (j * width), start.getY()),
-                                51, 20, random), true));
+                                51, 20, color), true));
             }
             start = new Point(start.getX(), start.getY() - height);
         }

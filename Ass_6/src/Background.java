@@ -24,7 +24,7 @@ public class Background implements Sprite {
      */
     public Background(Color color) {
         this.rect1 = new Rectangle(new Point(0, 0), 800, 600, color);
-        this.rect2 = new Rectangle(new Point(0, 0), 800, 20, Color.PINK);
+        this.rect2 = new Rectangle(new Point(0, 0), 800, 20, Color.lightGray);
     }
 
     /**

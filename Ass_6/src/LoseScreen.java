@@ -49,8 +49,8 @@ public class LoseScreen implements Animation {
         d.fillCircle(500 + 50, 375, 100);
         //pupils
         d.setColor(Color.BLACK);
-        d.fillCircle(450 + 50, 210, 45);
-        d.fillCircle(540 + 50, 210, 45);
+        d.fillCircle(450 + 50, 210, 47);
+        d.fillCircle(540 + 50, 210, 47);
         //beak
         d.setColor(Color.ORANGE);
         d.fillOval(475 + 50, 230, 40, 60);
