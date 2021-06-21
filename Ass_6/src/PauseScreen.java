@@ -27,8 +27,10 @@ public class PauseScreen implements Animation {
 
     @Override
     public void doOneFrame(DrawSurface d) {
+       //frame
         d.setColor(Color.MAGENTA);
         d.fillRectangle(0, 0, 800, 600);
+        //background
         d.setColor(Color.PINK);
         d.fillRectangle(20, 20, 760, 560);
         d.setColor(Color.white);

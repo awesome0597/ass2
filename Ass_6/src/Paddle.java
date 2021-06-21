@@ -41,11 +41,11 @@ public class Paddle implements Sprite, Collidable {
      * Changes the upper left corner of rectangle to make it look like the paddle is moving left.
      */
     public void moveLeft() {
-        if (this.rect.getUpperLeft().getX() - speeed > 20) {
+        if (this.rect.getUpperLeft().getX() - speeed > 25) {
             this.rect.setUpperLeft(
                     new Point(this.rect.getUpperLeft().getX() - speeed, this.rect.getUpperLeft().getY()));
         } else {
-            this.rect.setUpperLeft(new Point(20, this.rect.getUpperLeft().getY()));
+            this.rect.setUpperLeft(new Point(25, this.rect.getUpperLeft().getY()));
         }
 
 
@@ -55,11 +55,11 @@ public class Paddle implements Sprite, Collidable {
      * Changes the upper left corner of rectangle to make it look like the paddle is moving right.
      */
     public void moveRight() {
-        if (this.rect.getUpperRight().getX() + speeed < 780) {
+        if (this.rect.getUpperRight().getX() + speeed < 775) {
             this.rect.setUpperLeft(
                     new Point(this.rect.getUpperLeft().getX() + speeed, this.rect.getUpperLeft().getY()));
         } else {
-            this.rect.setUpperLeft(new Point(780 - this.rect.getWidth(), this.rect.getUpperLeft().getY()));
+            this.rect.setUpperLeft(new Point(775 - this.rect.getWidth(), this.rect.getUpperLeft().getY()));
         }
 
     }

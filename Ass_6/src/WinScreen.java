@@ -45,12 +45,12 @@ public class WinScreen implements Animation {
         //belly
         d.setColor(Color.white);
         d.fillCircle(500 + 50, 375, 100);
-        d.fillCircle(500 + 50, 230, 85);
+//        d.fillCircle(500 + 50, 230, 85);
         //pupils
-        d.setColor(Color.BLACK);
+        d.setColor(Color.WHITE);
         d.fillOval(425 + 50, 190, 70, 50);
         d.fillOval(500 + 50, 190, 70, 50);
-        d.setColor(Color.WHITE);
+        d.setColor(Color.BLACK);
         d.fillOval(425 + 50, 200, 70, 50);
         d.fillOval(500 + 50, 200, 70, 50);
         //cheeks
@@ -59,7 +59,7 @@ public class WinScreen implements Animation {
         d.fillCircle(545 + 50, 250, 10);
         //beak
         d.setColor(Color.ORANGE);
-        d.fillOval(475 + 50, 230, 40, 60);
+        d.fillOval(475 + 50, 240, 40, 60);
         //feet
         d.fillOval(425 + 50, 495, 80, 40);
         d.fillOval(495 + 50, 495, 80, 40);

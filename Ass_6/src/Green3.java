@@ -46,7 +46,7 @@ public class Green3 implements LevelInformation {
 
     @Override
     public Sprite getBackground() {
-        return new Background(new Color(153,255,153));
+        return new Background(new Color(153, 255, 153));
     }
 
     /**
@@ -60,11 +60,11 @@ public class Green3 implements LevelInformation {
         List<Block> blockList = new ArrayList<>();
         int numOfCollums = 7;
         int numOfRows = 6;
-        Point start = new Point(429, 300);
+        Point start = new Point(425, 300);
         double width = 50;
         double height = 20;
         for (int i = 0; i < numOfRows; i++) {
-            Color color = new Color(0, 36 * (i + 1), 0);
+            Color color = new Color(100,  36 * i, 100);
             for (int j = 0; j < numOfCollums; j++) {
                 Block block = new Block(new Rectangle(
                         new Point(start.getX() + (width * j), start.getY()), width, height, color), true);

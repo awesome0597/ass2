@@ -18,7 +18,7 @@ public interface Animation {
     void doOneFrame(DrawSurface d);
 
     /**
-     * changes the status of boolean
+     * changes the status of boolean.
      *
      * @return type boolean
      */

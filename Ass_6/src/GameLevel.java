@@ -178,7 +178,7 @@ public class GameLevel implements Animation {
         double heightSides = gui.getDrawSurface().getHeight() - widthSides - 20;
         Point one = new Point(0, 20);
         Point two = new Point(20, 600);
-        Point three = new Point(780, 45);
+        Point three = new Point(775, 45);
         Point four = new Point(0, 45);
         List<Block> blockList = new ArrayList<>();
         //death region

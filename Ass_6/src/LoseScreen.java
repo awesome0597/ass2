@@ -32,7 +32,7 @@ public class LoseScreen implements Animation {
         d.drawText(10, d.getHeight() / 2, "Game Over. Your score is " + score, 32);
         d.setColor(Color.BLACK);
         d.fillRectangle(0, 0, 800, 600);
-        d.setColor(Color.RED);
+        d.setColor(new Color(128, 0, 0));
         d.fillRectangle(20, 20, 760, 560);
         d.setColor(Color.white);
         d.drawText(40, 100, "Game Over.", 32);
@@ -43,12 +43,12 @@ public class LoseScreen implements Animation {
         d.fillCircle(500 + 50, 230, 125);
         //eyes
         d.setColor(Color.white);
-        d.fillCircle(450 + 50, 210, 50);
-        d.fillCircle(540 + 50, 210, 50);
+//        d.fillCircle(450 + 50, 210, 50);
+//        d.fillCircle(540 + 50, 210, 50);
         //belly
         d.fillCircle(500 + 50, 375, 100);
         //pupils
-        d.setColor(Color.BLACK);
+        d.setColor(Color.RED);
         d.fillCircle(450 + 50, 210, 47);
         d.fillCircle(540 + 50, 210, 47);
         //beak
